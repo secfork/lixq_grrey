@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd ">
+	<!-- mybatis 配置 -->
+	
+	 <!-- 注解式事务管理 -->	
+	<!-- <tx:annotation-driven transaction-manager="txManager"/> -->
+	 
+	
+	<bean id="thingLinxDbS" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		
+		<!-- <property name="driverClass" value="${db.driverClass}" /> -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver" /> 
+				 
+	<!-- 	
+		<property name="jdbcUrl" value="${db.url}" />
+		<property name="user" value="${db.user}" />
+		<property name="password" value="${db.password}" />
+  -->
+
+ 
+  <!-- albb  内网 -->
+ 
+     <!--  <property name="jdbcUrl"   value="jdbc:mysql://rds34xf8im5vd64528cd.mysql.rds.aliyuncs.com:3306/athena?zeroDateTimeBehavior=convertToNull"/> 
+		<property name="user" value="athena_user"></property> 
+		<property name="password"  value="athena_user"></property>    
+   -->
+     
+    
+    
+		<!-- local db 外网  -->
+		
+	    <property name="jdbcUrl" value="jdbc:mysql://172.18.16.254:4306/athena?zeroDateTimeBehavior=convertToNull" />
+		<property name="user" value="labuser"></property>
+		<property name="password" value="labuser"></property>  
+      
+		
+		<!-- local  db 内 -->
+	   
+     <!--      <property name="jdbcUrl" value="jdbc:mysql://192.168.122.108:3306/athena?zeroDateTimeBehavior=convertToNull" />
+		<property name="user" value="labuser"></property>
+		<property name="password" value="labuser"></property>  
+	    -->
+	   
+	 
+	 
+	 
+		<property name="minPoolSize" value="5"    />
+		<property name="maxPoolSize" value="100" />
+		<property name="maxIdleTime" value="1200" />
+	 
+<!-- 		<property name="minPoolSize" value="${c3p0.minPoolSize}"    />
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}" />
+		<property name="maxIdleTime" value="${c3p0.timeout}" />
+	  -->
+		<!-- 当连接池耗尽时候，一次获得连接数 -->
+		  
+		<property name="acquireIncrement" value="10" />
+		<property name="maxStatements" value="0" />
+		 
+<!-- 		<property name="acquireIncrement" value="${c3p0.acquireIncrement}" />
+		<property name="maxStatements" value="${c3p0.max_statements}" />
+		  -->
+		
+		<!-- 当连接池连接耗尽时，客户端getConnection(),所等待的时间  -->
+		<!-- <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}" /> -->
+  		<property name="idleConnectionTestPeriod" value="120" />
+ 
+		
+		<!-- 当连接失效时，获得连接的次数，0为无限次（重连） -->
+		<property name="acquireRetryAttempts" value="10" />
+<!-- 		<property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}" /> -->
+		
+	</bean>
+	
+	 
+	
+	<!-- log4jdbc -->
+	<!-- 
+    <bean id="myBatisDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+	    <constructor-arg ref="thingLinxDbS" />
+	    <property name="logFormatter"> 
+		      <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter"> 
+		        <property name="loggingType" value="MULTI_LINE" /> 
+		        <property name="margin" value="19" /> 
+		        <property name="sqlPrefix" value="SQL:::" /> 
+		      </bean> 
+	    </property> 
+	</bean>
+ -->
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource"        ref="thingLinxDbS" />
+		<property name="configLocation"  value="classpath:mybatis/mybatis.xml" />
+		<property name="mapperLocations"  >
+			<array>
+				<!--
+				<value>classpath:com/sunwayland/web/dao/*.xml</value>
+				<value>classpath:com/sunwayland/web/dao_ext/*.xml</value>  
+				 -->
+			</array> 
+		</property>
+	</bean>
+	 
+ 
+	 
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	
+		 <property name="basePackage" value="com.sunwayland.web.dao" />
+		 
+		 <property name="sqlSessionFactory"   ref="sqlSessionFactory"   />
+		 <!-- 
+		  <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property> 
+		   -->
+	</bean>
+	 
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 
+		  <property name="dataSource" ref="myBatisDataSource" />
+		 -->
+		 <property name="dataSource" ref="thingLinxDbS" />
+	</bean>
+	
+	 
+ 
+	<tx:advice id="userTxAdvice" transaction-manager="transactionManager">
+		<tx:attributes>    
+			<tx:method name="del*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception"   no-rollback-for="java.lang.RuntimeException" />
+				
+		    <tx:method name="inser*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />
+			
+			<tx:method name="crea*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.RuntimeException" />  
+			
+			<tx:method name="upda*" propagation="REQUIRED" read-only="false"
+				rollback-for="java.lang.Exception" />
+				
+
+			<tx:method name="find*" propagation="SUPPORTS"   read-only="true" />
+			<tx:method name="query*" propagation="SUPPORTS"  read-only="true"/>
+			<tx:method name="get*" propagation="SUPPORTS"  read-only="true"/>
+			<tx:method name="select*" propagation="SUPPORTS"  read-only="true" />
+			<tx:method name="list*" propagation="SUPPORTS"  read-only="true" />
+			<tx:method name="*" propagation="SUPPORTS"  read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="pc" expression="execution(* com.sunwayland.web.service..*.*(..)))" />
+		<aop:advisor pointcut-ref="pc" advice-ref="userTxAdvice" />
+	</aop:config>
+	
+	<aop:config>
+		
+	</aop:config>
+	
+
+</beans>
+
+    

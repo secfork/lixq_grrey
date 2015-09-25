@@ -1,0 +1,25 @@
+  
+  javax.net.ssl.SSLException:
+   Certificate for <172.18.16.254> doesn't contain CN or DNS subjectAlt
+ 
+ *  The problem is not in your code but in the certificate.
+ *  You need to have your domain name (the one the client is connecting to) 
+ *  specified either in SubjectName.CommonName field of the certificate or in 
+ *  Subject Alternative Name extension of the certificate. You need to re-create the certificate and
+ *  when doing this, check manuals regarding how to specify CommonName 
+ *  (you'd need to set it to something like "www.mydomain.com")
+ 
+ 
+1: openssl x509 -req -in certrequest.csr -out root-cert.cer -signkey privatekey.pem -CAcreateserial -days 3650
+
+2:  openssl genrsa -out client-key.key 1024
+
+生成客户端请求文件
+3: openssl req -new -out client-req.csr -key client-key.key
+
+  生成客户端证书
+4: openssl x509 -req -in  client-req.csr -out client-cert.cer -signkey client-key.key -CA   root-cert.cer -CAkey privatekey.pem -CAcreateserial -days 3650
+ 
+//  用java keytool 工具; 
+5: keytool -import -v -trustcacerts -storepass 123456 -alias client -file client-cert.cer -keystore  client.jks
+ 

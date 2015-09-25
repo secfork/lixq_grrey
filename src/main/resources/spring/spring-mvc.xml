@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+				        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+				        http://www.springframework.org/schema/context
+				        http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+				        http://www.springframework.org/schema/mvc
+				        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+				       http://www.springframework.org/schema/aop
+				       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+				        
+				        ">
+				        
+				        
+	<!--  导入 shrio 配置  -->
+  <!--  <import resource="classpath:spring/spring-mvc-shiro.xml"/>   --> 
+    
+   
+   <!-- mvc aspectj d动态代理  -->
+   
+	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" /> 
+	
+	
+		
+	<!-- 定义无Controller的path<->view直接映射 --> 
+	<!-- <mvc:view-controller path="/" view-name="redirect:/welcome"/> -->
+ 
+	  <mvc:interceptors>
+			 <mvc:interceptor> 
+				 <mvc:mapping path="/**"/> 
+			 	<bean class="com.sunwayland.web.interceptor.inter1">
+			 	</bean> 
+			 </mvc:interceptor> 
+		</mvc:interceptors> 
+		
+	
+		
+
+	<!-- 扫描controller（controller层注入） -->
+	  <context:component-scan base-package="com.sunwayland" >
+	      <!--  <context:include-filter type="annotation"
+                                expression="com.sunwayland.core.annotationoller"/>
+	  	   <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/> -->
+	 </context:component-scan>  
+	 
+	 
+
+   <!-- 指定自己定义的validator  ;  处理 @current ,  authroMap 注解 -->
+    <mvc:annotation-driven validator="validator">
+    		  
+    	<!-- 	<mvc:argument-resolvers>
+    			<bean  class="com.sunwayland.core.annotation.AuthorMapArgumentResolver"></bean>
+    			<bean  class="com.sunwayland.core.annotation.CurrentUserArgumentResolver" ></bean>
+    		</mvc:argument-resolvers>
+    		  -->
+    </mvc:annotation-driven>
+     
+     
+    <!-- 以下 validator ConversionService 在使用 mvc:annotation-driven 会 自动注册 -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+       <!--  如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+       <!-- <property name="validationMessageSource" ref="messageSource"/>   -->
+    </bean>
+    
+    
+    <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->  
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+	    <property name="basenames">  
+	        <list>  
+	           <!--  在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->  
+	            <value>classpath:message/CheckMessage</value>    
+	        </list>  
+	    </property>  
+	   <!--  <property name="useCodeAsDefaultMessage" value="false"/>  
+	    <property name="defaultEncoding" value="UTF-8"/>  
+	    <property name="cacheSeconds" value="60"/>   -->
+	</bean>   
+	
+  
+  
+  	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver">
+		<!--
+		<property name="cookieName" value="clientlanguage"/>
+		<property name="cookieMaxAge" value="-1"/>
+		 -->
+	</bean>
+	 
+	 
+
+	<!-- 支持返回json(避免IE在ajax请求时，返回json出现下载 ) -->
+  <bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			   <!--  <ref bean="defaultViewResolver" />  --> 
+			</list>
+		</property>
+	</bean> 
+
+  	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+ 
+
+	<!-- <bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"> -->
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>  
+	
+	  <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
+ <!--    <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:order="1">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="contentType" value="text/html"/>
+        <property name="prefix" value="/WEB-INF"/>
+        <property name="suffix" value=".jsp"/>
+    </bean> -->
+	
+	
+	
+ 
+
+	<!-- 文件 上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="URF-8">
+		</property>
+		<property name="maxUploadSize" value="1048576"></property> <!-- 1M   (bytes)  -->
+		<property name="maxInMemorySize" value="2048"></property> <!--  10K  太大获取不到 file -->
+		
+		<!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常 -->
+		<property name="resolveLazily" value="true" />
+
+	</bean>
+
+
+</beans>
+
+
+ 
