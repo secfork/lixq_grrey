@@ -10,8 +10,12 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.TTCCLayout;
 import org.junit.Test;
+
+import com.sunwayland.core.utils.Utils;
 
 /*
 功能:		web.duanxinwang.cc HTTP接口 发送短信
@@ -26,13 +30,20 @@ public class Note {
 	 * system  联系人 短信验证码 发送; 
 	 * @throws IOException 
 	 */
-	public  static void  send2Connect(String cell_phone,  String  data ) throws IOException{
+	public  static String  send2Connect(String cell_phone ) throws IOException{
 		// 消息模版:  短信验证码为：@，请勿将验证码提供给他人。【短信网】
+		 
+		 
+ 		String timeStr = Utils.getTimeStr( "yyyy-MM-dd hh:mm:ss",  1000*60*2 );
 		
-		String  msg   = String.format( conncet , data);
+		 
+		String  ss = "系统联系人短信验证码为：%s，请勿将验证码提供给他人!失效时间 :%s";
+		String  num = Utils.randomNum(6);
+		String  msg   = String.format( conncet , num , timeStr);
 		
 		tt( cell_phone ,msg);
 		
+		return num ; 
 		
 	}
 	

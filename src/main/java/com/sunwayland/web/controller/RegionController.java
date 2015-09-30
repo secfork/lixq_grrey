@@ -2,6 +2,7 @@ package com.sunwayland.web.controller;
 
 import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,7 @@ import com.sunwayland.web.vo.Global;
 public class RegionController extends GenericAction {
 
 	Logger log = Logger.getLogger(RegionController.class);
-
-	@Autowired
-	private ThingLinxRest rest;
+ 
 
 	private Gson gson = new Gson();
 
@@ -69,6 +68,7 @@ public class RegionController extends GenericAction {
 	public Object queryRegions(
 			@ModelAttribute(Global.session_key_user) User user,
 			HttpServletRequest requset ,
+			HttpSession session ,
 			WebPage page) {
  
 		return rest.https.query(user,ReginUrl.query, null,

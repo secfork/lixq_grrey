@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sunwayland.rest.RestUtils;
 import com.sunwayland.rest.params.GenericParams;
+import com.sunwayland.rest.params.SuffixParams;
+import com.sunwayland.rest.params.UrlParams;
 import com.sunwayland.web.vo.Global;
 
 public class HttpRest {
@@ -43,6 +45,11 @@ public class HttpRest {
 
 	@SuppressWarnings("rawtypes")
 	public Map get(String url, GenericParams urlParams, GenericParams suffixParams) {
+		
+		if( null == urlParams )
+			urlParams = UrlParams.get();
+	if( null == suffixParams )
+			suffixParams = SuffixParams.get();
 
 		Map<String, String> pathPar = urlParams.getMap();
 		MultiHashMap urlPar = (MultiHashMap) suffixParams.getMap();
@@ -61,6 +68,11 @@ public class HttpRest {
 	};
 
 	public Map put(String url, Object body, GenericParams urlParams, GenericParams suffixParams) {
+		
+		if( null == urlParams )
+			urlParams = UrlParams.get();
+	if( null == suffixParams )
+			suffixParams = SuffixParams.get();
 
 		Map<String, String> pathPar = urlParams.getMap();
 
@@ -92,7 +104,13 @@ public class HttpRest {
 			GenericParams urlParams,
 			GenericParams suffixParams
 			) {
-
+		
+		if( null == urlParams )
+				urlParams = UrlParams.get();
+		if( null == suffixParams )
+				suffixParams = SuffixParams.get();
+		
+		
 		 
 		Map<String, String> pathPar = urlParams.getMap();
 
@@ -122,6 +140,10 @@ public class HttpRest {
 			GenericParams urlparams,
 			GenericParams suffixparams) {
 
+		if( null == urlparams )
+			urlparams = UrlParams.get();
+	if( null == suffixparams )
+		suffixparams = SuffixParams.get();
 	 
 		Map<String, String> pathPar = urlparams.getMap();
 

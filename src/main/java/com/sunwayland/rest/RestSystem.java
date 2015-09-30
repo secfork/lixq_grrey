@@ -103,7 +103,7 @@ public class RestSystem extends HttpsRest {
 	 * @return
 	 */
 	public Object syncSystem( User user, String system_uuid) {
-		return this.put( user , 
+		return this.post( user , 
 				SystemUrl.sync, 
 				null,
 				UrlParams.get().system_id(system_uuid),
@@ -117,7 +117,7 @@ public class RestSystem extends HttpsRest {
 	 * @return
 	 */
 	public Object startSystem( User user , String system_uuid) {
-		return this.put( user , SystemUrl.start,
+		return this.post( user , SystemUrl.start,
 				null,
 				UrlParams.get().system_id(system_uuid),
 				SuffixParams.get()
@@ -150,7 +150,7 @@ public class RestSystem extends HttpsRest {
 	 * @return
 	 */
 	public Object stopSystem(User user, String system_uuid) {
-		return this.put( user , SystemUrl.stop,
+		return this.post( user , SystemUrl.stop,
 				null,
 				UrlParams.get().system_id(system_uuid),
 				SuffixParams.get());

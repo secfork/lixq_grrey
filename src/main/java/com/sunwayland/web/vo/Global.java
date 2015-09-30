@@ -15,6 +15,10 @@ public class Global {
     
     public static final String session_key_uiauthor    = "uiauthor";
     public static final String session_key_login_time  = "logtimes";
+    
+    /**
+     * system 联系人验证码!
+     */
     public static final String session_key_connect_verifiy ="connect_verifiy";
     
     /**
@@ -33,7 +37,10 @@ public class Global {
 	public static String STATION_STATE_ACTIVE = "1";
 	public static String STATION_STATE_UNACTIVE = "0";
 	
-	public static Integer max_ItemsPerPage = 1000 ;  // 每页 最多条数; 
+	public static Integer max_ItemsPerPage = 1000 ;  // 每页 最多条数;
+	
+	// systen  联系人 验证码 短信失效时间;
+	public static String session_connect_timeout = "connect_timeout";
 	
 	public static  final String err_key ="err";
 	public static  final String ret_key ="ret";

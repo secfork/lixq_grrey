@@ -38,9 +38,7 @@ import com.sunwayland.web.vo.ServiceResult;
 public class CommonController extends GenericAction {
 
 	Logger log = Logger.getLogger(CommonController.class);
-
-	@Autowired
-	private ThingLinxRest rest;
+ 
 
 	// 验证码;
 	@Autowired

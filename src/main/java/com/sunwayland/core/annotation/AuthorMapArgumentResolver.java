@@ -1,6 +1,5 @@
 package com.sunwayland.core.annotation;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

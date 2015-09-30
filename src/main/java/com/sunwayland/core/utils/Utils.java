@@ -1,28 +1,21 @@
 package com.sunwayland.core.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
-
-import net.sf.cglib.core.Local;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.Gson;
@@ -62,13 +55,15 @@ public class Utils {
 	 * @param str
 	 * @return
 	 */
+	@Deprecated
 	public static String  toSha256 (String str)  {
 	   
 	    if(null == str) return "";  
-	    String string = new Md5Hash(str).toString(); 
+//	    String string = new Md5Hash(str).toString(); 
 	  //  String string = new Sha256Hash( str ,"www.sunwayland.com").toString(); 
-	    return string ;   
+//	    return string ;   
 	    
+	    return null ;
 	}
 	
 	 public static Gson createGson() {
@@ -122,9 +117,11 @@ public class Utils {
 		return resources;
 	}
 
+	@Deprecated
 	public static Object  getShiroSessionAttr(Subject subject, String sessionkey) {
 		 	
-		 return   subject.getSession().getAttribute(sessionkey);
+		// return   subject.getSession().getAttribute(sessionkey);
+		return null ;
 	}
 
  
@@ -161,10 +158,11 @@ public class Utils {
 	 */
 	 
 	 
-
+	@Deprecated
 	public static User getCurrentUser() {
-		 Object attribute = SecurityUtils.getSubject().getSession().getAttribute(Global.session_key_user);
-		return (User) attribute;
+//		 Object attribute = SecurityUtils.getSubject().getSession().getAttribute(Global.session_key_user);
+//		return (User) attribute;
+		return null ; 
 	}
 	
 	/**获得国际化 字符串;
@@ -243,6 +241,15 @@ public class Utils {
 		return true ;
 		  
 		 
+	}
+
+	public static String getTimeStr(String format, int  offset) {
+		// TODO Auto-generated method stub
+		
+		
+		String format2 = DateFormatUtils.format(new Date( new Date().getTime()+ offset ),  format);
+		
+		return format2;
 	}
 	
 	

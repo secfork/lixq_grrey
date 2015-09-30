@@ -28,9 +28,7 @@ import com.sunwayland.web.vo.Global;
 @ResponseBody
 //@SessionAttributes("user")
 public class ModelProfileController extends ExceptionHandl {
-
-	@Autowired
-	private ThingLinxRest rest;
+ 
 
 	private Logger log = Logger.getLogger(ModelProfileController.class);
 

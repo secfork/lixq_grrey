@@ -2,16 +2,11 @@ package com.sunwayland.core.annotation;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
- 
-
-import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
 import com.sunwayland.web.vo.Global;
 

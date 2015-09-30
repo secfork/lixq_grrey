@@ -27,16 +27,17 @@ public class Contact  extends RestBody{
     @NotNull( groups={ Create.class , Update.class})
     private String   first_name   ; 
  
-    private String    mail_notice  ; 
+    private String   mail_notice  ; 
     
     
-    private String    sms_notice  ; 
+    private String   sms_notice  ; 
     @NotNull( groups={ Create.class , Update.class})
-    private String    email  ; 
+    private String   email  ; 
     
     @Pattern( regexp="[0-9]{8,11}" , message="tel 必须是8-12的数字格式!!" ,
 	     groups={ Create.class, Update.class})
     private String    tel  ; 
+    
     private String    mobile_phone  ; 
     private String    country  ; 
     private String    province  ; 
@@ -44,6 +45,10 @@ public class Contact  extends RestBody{
     private String    address  ; 
     private String    zip_code  ;
     
+    
+    // 短信验证吗; 
+    @NotNull
+    private String  code ; 
     
     
     
@@ -95,7 +100,13 @@ public class Contact  extends RestBody{
     public void setTel(String tel) {
         this.tel = tel;
     }
-    public String getMobile_phone() {
+    public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getMobile_phone() {
         return mobile_phone;
     }
     public void setMobile_phone(String mobile_phone) {

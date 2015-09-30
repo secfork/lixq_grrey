@@ -1,24 +1,18 @@
 package com.sunwayland.rest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 
 import com.google.gson.Gson;
-import com.gs.collections.impl.utility.MapIterate;
-import com.sunwayland.web.vo.Global;
 
 public class RestUtils {
 

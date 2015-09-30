@@ -1,6 +1,10 @@
 package com.sunwayland.web.controller;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +41,7 @@ import com.sunwayland.web.vo.Global;
 @RequestMapping("system")
 //@SessionAttributes("user")
 public class SystemController extends GenericAction {
-
-	@Autowired
-	private ThingLinxRest rest;
+ 
 
  
 	// =============================== system    =============================
@@ -199,10 +201,28 @@ public class SystemController extends GenericAction {
 	}
 
 	// 召唤实时; 
-	@RequestMapping(value = "/{systemuuid}", method = RequestMethod.POST)
-	public Object callSys(@ModelAttribute(Global.session_key_user) User user, @PathVariable String systemuuid) {
+	@RequestMapping(value = "/{systemuuid}", method = RequestMethod.POST  , params= {"type"})
+	public Object callSys(
+			@ModelAttribute(Global.session_key_user) User user,
+			@PathVariable String systemuuid ,
+			int type 
+			) {
 		
-		return rest.System.callSystem(user ,  systemuuid , CallType.REALTIME);
+		if( 0 == type ){
+			return rest.System.callSystem(user ,  systemuuid , CallType.CALL_REALTIME);			
+		}
+		if( 1 == type ){
+			return rest.System.callSystem(user ,  systemuuid , CallType.CALL_STANDBY);			
+			
+		}
+		if( 2 == type ){
+			return rest.System.callSystem(user ,  systemuuid , CallType.CALL_ALL);			
+			
+		}
+		
+		return null ; 
+		
+		
 	}
 
 	
@@ -214,7 +234,8 @@ public class SystemController extends GenericAction {
 	// =====================system 下的 contact 联系人   /contacts/{system_uuid} =====================================================
 	
 	@RequestMapping(value = "/contacts/{system_uuid}", method = RequestMethod.GET)
-	public Object selectSystemContact(@ModelAttribute(Global.session_key_user) User user,
+	public Object selectSystemContact(
+			@ModelAttribute(Global.session_key_user) User user,
 			@PathVariable String system_uuid
 			) {
 
@@ -235,12 +256,26 @@ public class SystemController extends GenericAction {
 	public Object createSystemContact(@ModelAttribute(Global.session_key_user) User user,
 			@PathVariable String system_uuid,
 			@Validated(Create.class) @RequestBody Contact contact,
+			HttpSession session ,
 			BindingResult result
 
 			) {
 
 		Utils.handlerBindngResult(result);
-
+		
+		
+		// 验证 短信 是否失效; 
+		String code = contact.getCode();
+		
+		long  timeout = (long) session.getAttribute(Global.session_connect_timeout);
+		String   _code  = (String) session.getAttribute(Global.session_key_connect_verifiy);
+		
+		if( !_code.equalsIgnoreCase(code) ||  timeout < new Date().getTime() ){
+			return  RESP_ERR("短信验证码无效!");
+		}
+		
+		contact.setCode(null);
+		
 		return rest.System.post(user ,
 				SystemUrl.createContact,
 				contact,
@@ -270,5 +305,38 @@ public class SystemController extends GenericAction {
 				);
 
 	}
+	
+	//=================================    /assign     分配 dtu systen 的  daserver ; 
+	
+	//   dtu 类型 system 设置 driver 时 ;
+	@RequestMapping( value="/assign/{system_uuid}"  , params={"driver_id"} ,  method = RequestMethod.GET )
+	public  Object assignDTUSystem ( 
+			@ModelAttribute(Global.session_key_user) User user ,
+			@PathVariable String  system_uuid ,
+			String  driver_id 
+			){
+		
+		HashMap body = new HashMap();
+		body.put("driver_id", driver_id);
+		
+	  return 	rest.http.put("/info/systems/{system_id}/assign", body, 
+			   UrlParams.get().system_id(system_uuid),  null );
+		 
+	}
+	
+	//   dtu 类型 system 设置 driver 时 ;
+	@RequestMapping( value="/getassign/{system_uuid}"  ,   method = RequestMethod.GET )
+	public  Object getDTUServerOfSystem ( 
+			@ModelAttribute(Global.session_key_user) User user ,
+			@PathVariable String  system_uuid 
+			){
+		  
+	  return 	rest.http.get("/info/systems/{system_id}/assign",
+			  UrlParams.get().system_id(system_uuid),  null );
+		 
+	}
+	
+	
+	
 
 }

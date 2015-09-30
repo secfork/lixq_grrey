@@ -1,6 +1,7 @@
 package com.sunwayland.rest.basic;
 
 public enum CallType {
-	REALTIME ,STANDBY ,ALL,LOG ; 
+	
+	CALL_REALTIME , CALL_STANDBY , CALL_ALL ,  CALL_LOG ; 
 	
 }

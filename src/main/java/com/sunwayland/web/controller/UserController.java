@@ -44,9 +44,7 @@ public class UserController extends GenericAction {
 	 @Autowired
 	 private Gson gson ; 
 
-	
-	@Autowired
-	private ThingLinxRest rest;
+	 
 
 	@RequestMapping(method = RequestMethod.GET) 
 	public Object queryUsers(@ModelAttribute(Global.session_key_user) User user, WebPage page) {

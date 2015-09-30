@@ -1,6 +1,7 @@
 package com.sunwayland.web.controller;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kevin.Note;
 import com.sunwayland.core.generic.GenericAction;
-import com.sunwayland.core.utils.Utils;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.web.vo.Global;
 
@@ -25,34 +26,36 @@ public class NoteController extends GenericAction  {
 	
 	//RandPicture  
 	
-	@RequestMapping( value="/send_connnect" , params={"mobile_phone"}, method=RequestMethod.GET)
-	public  Object sendNote( @ModelAttribute(Global.session_key_user) User user ,
+	@RequestMapping( value="/connnect" , params={"mobile_phone"}, method=RequestMethod.GET)
+	public  Object sendConnect( @ModelAttribute(Global.session_key_user) User user ,
 							HttpSession session ,
 							String mobile_phone) throws IOException{
 		
-		String  num = Utils.randomNum(6);
-		
-		session.setAttribute(Global.session_key_connect_verifiy, num ); 
+		 
 		
 		if(null!=mobile_phone && mobile_phone.matches("^1\\d{10}$") ){
-		//	Note.send2Connect( mobile_phone ,num);
+			
+			String num = Note.send2Connect( mobile_phone );
+			session.setAttribute(Global.session_key_connect_verifiy, num ); 
+			// 短信显示有效时间是 2分钟;  这里实际是 2.5 分钟; 
+			session.setAttribute(Global.session_connect_timeout,
+					             new Date().getTime() + 1000*60*2.5);
+			
+			
 			return RESP(true);
 		}else{
 			return  RESP(false);
-		}
-		
-	  
-		 
+		} 
 	}
-	
-	
+	 
 	
 	/**
 	 * 联系人验证码验证; 
 	 * @return
 	 */
+	
 	@RequestMapping( value="/verify_connect" , params = "{code}" ,  method = RequestMethod.GET )
-	public Object verfiConnectVerify (  String code , HttpSession session ){
+	public Object verfiConnect (  String code , HttpSession session ){
 		Object attribute = session.getAttribute(Global.session_key_connect_verifiy);
 		if(null == attribute){
 			return  RESP_ERR(true);

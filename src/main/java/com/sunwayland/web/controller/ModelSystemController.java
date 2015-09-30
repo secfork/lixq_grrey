@@ -38,9 +38,7 @@ import com.sunwayland.web.vo.Global;
 @ResponseBody
 //@SessionAttributes("user")
 public class ModelSystemController extends GenericAction {
-
-	@Autowired
-	private ThingLinxRest rest;
+ 
 
 	private Logger log = Logger.getLogger(ModelSystemController.class);
 

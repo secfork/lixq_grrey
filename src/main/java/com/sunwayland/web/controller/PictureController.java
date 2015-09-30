@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Null;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.ibatis.executor.ReuseExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,11 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.aliyun.oss.OSSClient;
-import com.mysql.fabric.xmlrpc.Client;
 import com.sunwayland.core.generic.GenericAction;
-import com.sunwayland.core.utils.FileOperateUtil;
-import com.sunwayland.core.utils.Utils;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.rest.params.UrlParams;
 import com.sunwayland.rest.url.SystemUrl;

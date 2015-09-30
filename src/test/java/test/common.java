@@ -1,9 +1,12 @@
 package test;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.crypto.Cipher;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
@@ -17,24 +20,9 @@ public class common {
 	@Test
 	public void t1 (){
 		 
-		User u1 = new User();
+//		Utils.getTimeStr( "HHHH MM DD hh:mm:ss",  1000*60*);
 		
-		System.out.println(  u1.hashCode()  );  // 14695349
-		System.out.println(  u1.hashCode()  );  // 14695349
-		
-//		System.out.println(  Pattern.matches( ".*/(png|jpeg|jpg)$", "gaefa/jpgf"));
-		
-		HashMap m = new HashMap ();
-		
-		m.put("123",  CallType.ALL);
-		
-		System.out.println( m);
-		
-		Gson  g = new Gson();
-		
-		System.out.println( g.toJson(m) );
-		;
-		
+		  
 		
 	}
 	

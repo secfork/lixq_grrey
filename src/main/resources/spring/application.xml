@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" 
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx" 
-	xmlns:cache="http://www.springframework.org/schema/cache" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:cache="http://www.springframework.org/schema/cache"
 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 				       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -23,113 +20,109 @@
 				       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd ">
 
 
+     <import resource="classpath:spring/application-session.xml"/>  
 
-   <context:property-placeholder  location="classpath:jdbc.properties"/>
-	   
-  
-  	<!--  OSS Client -->
-  	
-  	<bean class="com.aliyun.oss.OSSClient"  id="oss-client" >
-  		 
-  		 	<!--  oss 外网 -->
-  		 <constructor-arg  index="0"  value="http://oss-cn-beijing.aliyuncs.com" />
-  		 	<!--  oss 内 网 -->
-  		<!-- 
-  		 <constructor-arg  index="0"  value="http://oss-cn-beijing-internal.aliyuncs.com" />
-  		 -->
-  		  
-  		 <constructor-arg  index="1"  value="kp74z938xM97OCnV" />
-  		 <constructor-arg  index="2"  value="WmMdAKOWdjm0dr5UHtssXFmNyjeqqC" /> 
-  	</bean>
-  	
-  	
-  	
-  	
-  	<!-- Oss 封装类 -->
-    <bean class="com.sunwayland.web.albb.ThinglinxOss">
-    	<property name="client" ref="oss-client"/>
-    	<property name="bocketName" value="thinglinx-net"/>  
-    </bean>
-  
-  
-    
-   <bean class="com.sunwayland.web.vo.PicPath">
-   
-   		<property name="img_file" value="img"></property>
-   
-   	    <!--  window 路径 -->
-   		<property name="win_apppath" value="D:/SPACE_script/thinglinx_grunt/app/img"></property>
-   		<!--  linux 路径-->
-   		
-   		<property name="linux_apppath" value="/usr/local/nginx/html/webapp/img"></property> 
-   		 
-   </bean>
-    		
-   <!-- 扫描注解Bean  -->
-    <context:component-scan base-package="com.sunwayland">
-       <!--  <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
-    	
-    </context:component-scan>
-     
-   <!--  <import resource="classpath:spring/application-shiro.xml"/>    
-    <import resource="classpath:spring/application-mybatis-thinglinx.xml"/> 
-     -->
-   
- 	  <bean   class="com.sunwayland.core.utils.RandPicture"> </bean>
- 
-      <bean class="com.sunwayland.rest.ThingLinxRest" >
-      		 
-      	 
-      		 
-      		<!-- rest in albb 服务器 --> 
-       
-         <!-- 	
-         <constructor-arg  name="httpsUrl"    value="https://10.162.200.129:443/v2/json"/> 
-      		<constructor-arg  name="httpUrl"   value="http://10.162.200.129:3000"/> 
-      		<constructor-arg  name="keyStoreFilePath" value="restfull_albb.jks" />
-      	   -->
-      	 
-      		 
-      		          
-		<!--  rest  local  out  -->
-  
-            <constructor-arg  name="httpsUrl"  value="https://172.18.16.254:443/v2/json"/> 
-      		<constructor-arg  name="httpUrl"  value="http://172.18.16.254:3000"/> 
-      		<constructor-arg  name="keyStoreFilePath" value="cert/client_net.jks" />
-        
-       	 
-      	 	<!--  rest  local  in  -->
- 
-          <!--  
-            <constructor-arg  name="httpsUrl"  value="https://192.168.122.105:443/v2/json"/> 
-      		<constructor-arg  name="httpUrl"  value="http://192.168.122.105:3000"/> 
-      		<constructor-arg  name="keyStoreFilePath" value="/cert/client_net.jks" />
-         -->
-      		 
-      		
-      		<constructor-arg  name="keyStorePassword" value="123456" />
-      	 
-      		
-      </bean> 
-      
-		  
-	 <bean class="com.google.gson.Gson" ></bean>
+	<!-- <import resource="classpath:spring/application-shiro.xml"/> <import 
+		resource="classpath:spring/application-mybatis-thinglinx.xml"/> -->
+
+
+	<!-- <context:property-placeholder location="classpath:jdbc.properties"/> -->
+
+	<!-- OSS Client -->
+
+	<bean class="com.aliyun.oss.OSSClient" id="oss-client">
+
+		<!-- oss 外网 -->
+		<constructor-arg index="0"
+			value="http://oss-cn-beijing.aliyuncs.com" />
+		<!-- oss 内 网 -->
+		<!-- <constructor-arg index="0" value="http://oss-cn-beijing-internal.aliyuncs.com" 
+			/> -->
+
+		<constructor-arg index="1" value="kp74z938xM97OCnV" />
+		<constructor-arg index="2"
+			value="WmMdAKOWdjm0dr5UHtssXFmNyjeqqC" />
+	</bean>
+
+
+
+
+	<!-- Oss 封装类 -->
+	<bean class="com.sunwayland.web.albb.ThinglinxOss">
+		<property name="client" ref="oss-client" />
+		<property name="bocketName" value="thinglinx-net" />
+	</bean>
+
+
+
+	<bean class="com.sunwayland.web.vo.PicPath">
+
+		<property name="img_file" value="img"></property>
+
+		<!-- window 路径 -->
+		<property name="win_apppath" value="D:/SPACE_script/thinglinx_grunt/app/img"></property>
+		<!-- linux 路径 -->
+
+		<property name="linux_apppath" value="/usr/local/nginx/html/webapp/img"></property>
+
+	</bean>
+
+	<!-- 扫描注解Bean -->
+	<context:component-scan base-package="com.sunwayland">
+		<!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
+	</context:component-scan>
+
+
+	<bean class="com.sunwayland.core.utils.RandPicture">
+	</bean>
+
+	<bean class="com.sunwayland.rest.ThingLinxRest">
+
+
+
+		<!-- rest in albb 服务器 -->
+
+		<!-- <constructor-arg name="httpsUrl" value="https://10.162.200.129:443/v2/json"/> 
+			<constructor-arg name="httpUrl" value="http://10.162.200.129:3000"/> <constructor-arg 
+			name="keyStoreFilePath" value="restfull_albb.jks" /> -->
+
+
+
+		<!-- rest local out -->
+
+		<constructor-arg name="httpsUrl"
+			value="https://172.18.16.254:443/v2/json" />
+		<constructor-arg name="httpUrl" value="http://172.18.16.254:3000" />
+		<constructor-arg name="keyStoreFilePath" value="cert/client_net.jks" />
+
+		<!-- rest local in -->
+
+
+		<!-- <constructor-arg name="httpsUrl" value="https://192.168.122.105:443/v2/json"/> 
+			<constructor-arg name="httpUrl" value="http://192.168.122.105:3000"/> <constructor-arg 
+			name="keyStoreFilePath" value="/cert/client_net.jks" /> -->
+
+
+		<constructor-arg name="keyStorePassword" value="123456" />
+
+
+	</bean>
+
+
+	<bean class="com.google.gson.Gson"></bean>
+
+
+
 
 
 	<!-- Cache配置 放到 ACE 要 换成 Ace 的cache ; -->
-	
-<!-- 	<cache:annotation-driven cache-manager="cacheManager" />
 
-	<bean id="ehCacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-		p:configLocation="classpath:ehcache/ehcache.xml" />
+	<!-- <cache:annotation-driven cache-manager="cacheManager" /> <bean id="ehCacheManagerFactory" 
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="classpath:ehcache/ehcache.xml" 
+		/> <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" 
+		p:cacheManager-ref="ehCacheManagerFactory" /> -->
 
 
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
-		p:cacheManager-ref="ehCacheManagerFactory" />
-		
-		 -->
-		
-		
 
 	<!-- <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"/> 
 		<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" 
@@ -143,40 +136,20 @@
 		<property name="dataSource" ref="dataSource"/> <property name="configLocation" 
 		value="classpath:hibernate.cfg.xml"/> <property name="packagesToScan" value="com.sunwayland.po"></property> 
 		</bean> -->
-		
-		
-		
-<!--    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-       
-         
-          sunwayland@163.com  sun123 
-        
-        <property name="host" value="smtp.qq.com" />
-        <property name="port" value="25"/>
-        <property name="username" value="1987116566" />
-        <property name="password" value="li123456"  /> 
-        
-         
-		       目前我用过的EMAIL账号都是网易的,下面列出网易的SMTP服务器名和端口号:
-		        网易邮箱          SMTP服务器     SMTP端口                                POP3服务器       POP3端口
-		        @126.com     smtp.126.com      25          pop3.126.com      110
-		        @163.com     smtp.163.com      25          pop3.163.com      110
-		        @yeah.net    smtp.yeah.net      25          pop3.yeah.net     110
-		   
-         
-        <property name="javaMailProperties"> 
-            <props>
-                <prop key="mail.transport.protocol">smtp</prop>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>  
-                <prop key="mail.debug">true</prop>
-            </props>
-        </property>
-        
-        
-    </bean>
-		
-		 -->
+
+
+	<!-- <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+		sunwayland@163.com sun123 <property name="host" value="smtp.qq.com" /> <property 
+		name="port" value="25"/> <property name="username" value="1987116566" /> 
+		<property name="password" value="li123456" /> 目前我用过的EMAIL账号都是网易的,下面列出网易的SMTP服务器名和端口号: 
+		网易邮箱 SMTP服务器 SMTP端口 POP3服务器 POP3端口 @126.com smtp.126.com 25 pop3.126.com 
+		110 @163.com smtp.163.com 25 pop3.163.com 110 @yeah.net smtp.yeah.net 25 
+		pop3.yeah.net 110 <property name="javaMailProperties"> <props> <prop key="mail.transport.protocol">smtp</prop> 
+		<prop key="mail.smtp.auth">true</prop> <prop key="mail.smtp.starttls.enable">true</prop> 
+		<prop key="mail.debug">true</prop> </props> </property> </bean> -->
+
+	
+
 
 
 </beans>

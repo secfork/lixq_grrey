@@ -12,13 +12,14 @@ public class SystemUrl  {
 			public static final String query  = "/query/systems";
 			
 			public static final String call   ="/systems/{system_id}/control/poll" ;
+			
 			public static final String start  ="/systems/{system_id}/control/start" ;
 			public static final String stop   ="/systems/{system_id}/control/stop" ;
 			public static final String sync   ="/systems/{system_id}/sync" ;
 			
 			 
 			//点 下置数据; 
-			public static final String dumpdata = "/systems/{system_id}/live/write";
+			public static final String dumpdata = "/systems/{system_id}/control/write";
 					
 			
 			

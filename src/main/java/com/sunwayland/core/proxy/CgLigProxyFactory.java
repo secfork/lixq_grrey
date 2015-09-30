@@ -33,6 +33,7 @@ public class CgLigProxyFactory   implements MethodInterceptor {
 		    System.out.println("事物开始");  
 		    System.out.println( method.getName());
 	        Object object = proxy.invokeSuper(obj, args);  
+	        
 	        System.out.println("事物结束");  
 	        return object ;
 	} 

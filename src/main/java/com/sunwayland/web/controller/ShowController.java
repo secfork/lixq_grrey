@@ -30,9 +30,7 @@ import com.sunwayland.web.vo.Global;
 @SuppressWarnings("unchecked")
 //@SessionAttributes("user")
 public class ShowController extends GenericAction {
-
-	@Autowired
-	private ThingLinxRest rest;
+ 
 
 	
 	/**
