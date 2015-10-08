@@ -22,20 +22,33 @@
 				       http://www.springframework.org/schema/cache
 				       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd ">
 	
+	<context:annotation-config  base-package="com.sunwayland.core.session" />
 	
-	 <bean  id="springSessionRepositoryFilter" 
+	
+	
+<!-- 	 
+	<bean  id="springSessionRepositoryFilter" 
 	  	    class="com.sunwayland.core.session.Initializer">
      	 
-     </bean> 			       
+	</bean> 
+     	 -->		       
 				       
     <!-- redis session  start  -->
-	<bean  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-			p:hoseName="127.0.0.1"
-			p:prot ="6379" />
+ 
+	  <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
+     	
+     <bean	id="JredisConnectionFactory" 
+     		class="org.springframework.data.redis.connection.jredis.JredisConnectionFactory">
+	    <constructor-arg>
+	      <bean class="org.springframework.data.redis.connection.jredis.JredisPool">
+	        <constructor-arg value="127.0.0.1" />
+	        <constructor-arg value="6379" />
+	      </bean>
+	    </constructor-arg>
+	  </bean>
 	  
 	    	 
-	 <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
-     
+	
      
      <!-- redis session  end  --> 	 
 		 		       

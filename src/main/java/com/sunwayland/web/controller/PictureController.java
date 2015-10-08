@@ -18,7 +18,6 @@ import com.sunwayland.rest.params.UrlParams;
 import com.sunwayland.rest.url.SystemUrl;
 import com.sunwayland.web.albb.ThinglinxOss;
 import com.sunwayland.web.vo.Global;
-import com.sunwayland.web.vo.PicPath;
 
 
 @Controller
@@ -28,9 +27,7 @@ public class PictureController extends GenericAction {
 	
 	@Autowired
 	private ThinglinxOss  ossClient ;
-	
-	@Autowired
-	private  PicPath picPath ;
+	 
 	 
 
    // ==================== 上传 system 图片 ==============================

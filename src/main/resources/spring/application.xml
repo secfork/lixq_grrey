@@ -20,8 +20,8 @@
 				       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd ">
 
 
-     <import resource="classpath:spring/application-session.xml"/>  
-
+  <!--   <import resource="classpath:spring/application-session.xml"/>  
+ -->
 	<!-- <import resource="classpath:spring/application-shiro.xml"/> <import 
 		resource="classpath:spring/application-mybatis-thinglinx.xml"/> -->
 
@@ -33,19 +33,14 @@
 	<bean class="com.aliyun.oss.OSSClient" id="oss-client">
 
 		<!-- oss 外网 -->
-		<constructor-arg index="0"
-			value="http://oss-cn-beijing.aliyuncs.com" />
+		<constructor-arg index="0" value="http://oss-cn-beijing.aliyuncs.com" />
 		<!-- oss 内 网 -->
-		<!-- <constructor-arg index="0" value="http://oss-cn-beijing-internal.aliyuncs.com" 
-			/> -->
+		<!-- <constructor-arg index="0" value="http://oss-cn-beijing-internal.aliyuncs.com" /> -->
 
 		<constructor-arg index="1" value="kp74z938xM97OCnV" />
-		<constructor-arg index="2"
-			value="WmMdAKOWdjm0dr5UHtssXFmNyjeqqC" />
+		<constructor-arg index="2" value="WmMdAKOWdjm0dr5UHtssXFmNyjeqqC" />
 	</bean>
-
-
-
+ 
 
 	<!-- Oss 封装类 -->
 	<bean class="com.sunwayland.web.albb.ThinglinxOss">
@@ -53,46 +48,30 @@
 		<property name="bocketName" value="thinglinx-net" />
 	</bean>
 
-
-
-	<bean class="com.sunwayland.web.vo.PicPath">
-
-		<property name="img_file" value="img"></property>
-
-		<!-- window 路径 -->
-		<property name="win_apppath" value="D:/SPACE_script/thinglinx_grunt/app/img"></property>
-		<!-- linux 路径 -->
-
-		<property name="linux_apppath" value="/usr/local/nginx/html/webapp/img"></property>
-
-	</bean>
+ 
 
 	<!-- 扫描注解Bean -->
-	<context:component-scan base-package="com.sunwayland">
+	<context:component-scan base-package="com.sunwayland.web">
 		<!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
 	</context:component-scan>
-
 
 	<bean class="com.sunwayland.core.utils.RandPicture">
 	</bean>
 
 	<bean class="com.sunwayland.rest.ThingLinxRest">
-
-
-
+ 
 		<!-- rest in albb 服务器 -->
 
 		<!-- <constructor-arg name="httpsUrl" value="https://10.162.200.129:443/v2/json"/> 
-			<constructor-arg name="httpUrl" value="http://10.162.200.129:3000"/> <constructor-arg 
-			name="keyStoreFilePath" value="restfull_albb.jks" /> -->
+			<constructor-arg name="httpUrl" value="http://10.162.200.129:3000"/> 
+			<constructor-arg  name="keyStoreFilePath" value="restfull_albb.jks" /> -->
 
 
 
 		<!-- rest local out -->
 
-		<constructor-arg name="httpsUrl"
-			value="https://172.18.16.254:443/v2/json" />
-		<constructor-arg name="httpUrl" value="http://172.18.16.254:3000" />
+		<constructor-arg name="httpsUrl" value="https://172.18.16.254:443/v2/json" />
+		<constructor-arg name="httpUrl"  value="http://172.18.16.254:3000" />
 		<constructor-arg name="keyStoreFilePath" value="cert/client_net.jks" />
 
 		<!-- rest local in -->

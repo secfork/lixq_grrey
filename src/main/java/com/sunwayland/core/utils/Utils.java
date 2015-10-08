@@ -23,8 +23,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
 import com.sunwayland.core.exception.ValidateException;
 import com.sunwayland.rest.eneityV2.User;
-import com.sunwayland.web.vo.Global;
-import com.sunwayland.web.vo.PicPath;
 
  
 
@@ -227,21 +225,7 @@ public class Utils {
 		
 	}
 
-	public static boolean delSystemPicture( PicPath picPath ,  String pciurl) {
-		 
-		String  r   ; 
-		if( isWinOs()){
-			r = picPath.getWin_path();
-		}else{
-			r = picPath.getLinux_path();
-		}
-			 
-		 
-		FileUtils.deleteQuietly( new File(r+ File.separator  + pciurl));
-		return true ;
-		  
-		 
-	}
+ 
 
 	public static String getTimeStr(String format, int  offset) {
 		// TODO Auto-generated method stub

@@ -16,8 +16,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.sunwayland.web.vo.PicPath;
-
 public class FileOperateUtil {
 
 	// private static　DiskFileItemFactory f = new DiskFileItemFactory();
@@ -33,82 +31,7 @@ public class FileOperateUtil {
 	// ServletFileUpload(factory);
   
 	 
-
  
-	// 上传; 
-	/**
-	 * 反悔  account_Id/newnamexxxx.xxx ;  
-	 */
-	public static String  upload(HttpServletRequest request  , String accountid  , PicPath picPath ) 
-			throws Exception { 
-		
-	 
-		 String nginxPath ;
-		 if(  Utils.isWinOs() ){
-			  nginxPath = picPath.getWin_path();
-		 }else{
-			   nginxPath  = picPath.getLinux_path();
-		 }
-		  
-		
-		 String randomStr = Utils.randomStr(8); 
-		 
-		String system_id = request.getParameter("system_id");
-		 
-		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
-		
-		Map<String, MultipartFile> fileMap = mRequest.getFileMap();
-		
-		// web-inf/svg
-		String uploadDir =    nginxPath +File.separator +  accountid  ;
-				             // 还要 在再加 公司 名称;   还要 有 打散逻辑 ; 
-				          //   file.getProjname();
-
-		File dirfile = new File(uploadDir);
-
-		if (!dirfile.exists()) {
-			dirfile.mkdirs ();
-		}
-
-		String OriginalFilename = null;
-		int i = 0;
-		 
-		Set<Entry<String, MultipartFile>> entrySet = fileMap.entrySet();
-		 
-		for (Entry<String, MultipartFile> entry : entrySet) {
-		 
-			MultipartFile mFile = entry.getValue();
-			 
-			// 文件名; == xxxx.svg
-			//OriginalFilename = mFile.getOriginalFilename();  
-			//String  sufix = OriginalFilename.substring( OriginalFilename.lastIndexOf(".") );
-			//long size = mFile.getSize(); 
-			 
-		     String contentType = mFile.getContentType();
-		     
-		     boolean matches = contentType.matches( ".*(png|jpeg|jpg)$");
-		     if(!matches) return null ; 
-		     
-		     String  sufix = contentType.substring( contentType.lastIndexOf("/")+1 );
-				
-		        
-			 
-			String newfilename = system_id +"="+ Utils.randomStr(12)+"."+ sufix;
-  
-			File f = new File( dirfile, newfilename);
- 
-			BufferedOutputStream 	buffer_out = new BufferedOutputStream(new FileOutputStream(f));
-			FileCopyUtils.copy(mFile.getInputStream(), buffer_out);
-		 
-			// 反悔 新 民命的路径; 
-			//  file.setFilepath( dirfile.getPath() +  File.separator + newfilename   );
-			return  accountid+"/"+ newfilename;
-			
-		}
-		return null;
-	}
-
-	
 	
 	
 	/**

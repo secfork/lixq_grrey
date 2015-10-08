@@ -1,8 +1,8 @@
 package com.sunwayland.core.session;
 
-import javax.servlet.ServletContext;
-import javax.swing.Spring;
-
+import org.springframework.data.redis.connection.jredis.JredisConnectionFactory;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.SessionRepository;
 import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
 
 
@@ -10,12 +10,10 @@ import org.springframework.session.web.context.AbstractHttpSessionApplicationIni
 public class Initializer  extends AbstractHttpSessionApplicationInitializer {
 	
 	 
-	public Initializer() {   
-		super(Config.class);
+	public Initializer() {     
+		
+		super(JredisConnectionFactory.class);
     }
-
  
-	 
-	
 	
 }
