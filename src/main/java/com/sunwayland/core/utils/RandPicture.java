@@ -11,17 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 public class RandPicture {
     
     private Random random = new Random();
-    private String randString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
+    private String randString = "23456789qwertyupasdfghkzxcvbnm";//随机产生的字符串
     
-    private int width = 130;//图片宽
+    private int width = 80;//图片宽
     private int height = 30;//图片高
     private int lineSize = 40;//干扰线数量
-    private int stringNum = 3;//随机产生字符数量
+    private int stringNum = 4;//随机产生字符数量
     /*
      * 获得字体
      */
     private Font getFont(){
-        return new Font("宋体",Font.CENTER_BASELINE,18);
+        return new Font("宋体",Font.CENTER_BASELINE,22);
     }
     /*
      * 获得颜色

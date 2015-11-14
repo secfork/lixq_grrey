@@ -2,15 +2,19 @@ package com.sunwayland.rest.eneityV2;
 
 import javax.validation.constraints.NotNull;
 
+import com.sunwayland.core.validate.type.Create;
+import com.sunwayland.web.vo.ErrCode;
+
  
 public class Account {
 	private String id ; 
-	@NotNull
+	@NotNull( groups={ Create.class })
 	private String name ; 
 	private String desc ; 
 	private String license ;  
 	private String invite_code ; 
 	 
+	@NotNull( groups={ Create.class})
 	private String invitation_code ; 
 	
 	
@@ -21,7 +25,9 @@ public class Account {
 	
 	
 	//============ext====== 
-	private  String  IdentifyCode ; 
+	@NotNull( groups={ Create.class })
+	private  String  identifyCode ;  // 图片验证码; 
+	 
 	
 //	private String  username ; 
 //	private String  password ; 
@@ -37,7 +43,7 @@ public class Account {
 	
 	
 	
-	public String getId() {
+	public String getId() { 
 		return id;
 	}
  
@@ -69,21 +75,26 @@ public class Account {
 	}
  
 	
+	 
 	
-	 
-	 
-	 
 	public String getIdentifyCode() {
-		return IdentifyCode;
+		return identifyCode;
 	}
+
+
+
 	public void setIdentifyCode(String identifyCode) {
-		IdentifyCode = identifyCode;
+		this.identifyCode = identifyCode;
 	}
+
+
+
 	public void setId(String id) {
 		this.id = id;
 	}
- 
-	
+
+
+
 	public String getName() {
 		return name;
 	}

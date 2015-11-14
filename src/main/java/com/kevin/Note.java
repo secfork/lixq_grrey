@@ -5,13 +5,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.log4j.Logger;
 import org.apache.log4j.TTCCLayout;
 import org.junit.Test;
 
@@ -24,22 +28,33 @@ import com.sunwayland.core.utils.Utils;
 */
 public class Note {
 
-     private  static String conncet = "短信验证码为：%s，请勿将验证码提供给他人。";
+ 	static Logger log =  Logger.getLogger(Note.class);
+	
+     public  static String conncet = "您申请的验证码为%s,请在30分钟内完成验证";
+     public  static String account = "您申请的验证码为%s,请在30分钟内完成验证";
+     public  static String admin = "您申请的验证码为%s,请在30分钟内完成验证";
+     public  static String user = "您申请的验证码为%s,请在30分钟内完成验证";
+     
+//     public  static String conncet = "系统联系人验证码：%s，请勿将验证码提供给他人! 失效时间 :%s";
+//     public  static String account = "创建管理员验证码：%s，请勿将验证码提供给他人! 失效时间 :%s ";
+//     public  static String admin_update = "更新管理员验证码：%s，请勿将验证码提供给他人! 失效时间 :%s ";
+     
+     
+     
 	
 	/**
 	 * system  联系人 短信验证码 发送; 
 	 * @throws IOException 
 	 */
-	public  static String  send2Connect(String cell_phone ) throws IOException{
+	public  static String  send(String cell_phone , String msgBody ) throws IOException  {
 		// 消息模版:  短信验证码为：@，请勿将验证码提供给他人。【短信网】
 		 
 		 
- 		String timeStr = Utils.getTimeStr( "yyyy-MM-dd hh:mm:ss",  1000*60*2 );
+ 		String timeStr = Utils.getTimeStr( "yyyy-MM-dd hh:mm:ss",  1000*60*30 );
 		
-		 
-		String  ss = "系统联系人短信验证码为：%s，请勿将验证码提供给他人!失效时间 :%s";
+		  
 		String  num = Utils.randomNum(6);
-		String  msg   = String.format( conncet , num , timeStr);
+		String  msg   = String.format( msgBody , num , timeStr);
 		
 		tt( cell_phone ,msg);
 		
@@ -52,7 +67,7 @@ public class Note {
 	 * @param args
 	 * @throws IOException
 	 */ 
-	private  static   String tt( String cell_phone , String  msg ) throws IOException {
+	private  static   String tt( String cell_phone , String  msg ) throws IOException   {
 		//发送内容
 		String content =  msg; 
 		String sign="ThingLinx";
@@ -90,9 +105,9 @@ public class Note {
 		// 创建url对象
 		//String temp = new String(sb.toString().getBytes("GBK"),"UTF-8");
 		
-		System.out.println("sb:"+sb.toString());
 		
-		
+		log.info("sb:"+sb.toString());
+		 
 		URL url = new URL(sb.toString());
 
 		// 打开url连接

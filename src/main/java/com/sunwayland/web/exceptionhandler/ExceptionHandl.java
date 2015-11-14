@@ -1,5 +1,6 @@
 package com.sunwayland.web.exceptionhandler;
 
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +25,11 @@ import com.sunwayland.core.exception.ExceptionMessage;
 import com.sunwayland.core.exception.ValidateException;
 import com.sunwayland.core.generic.GenericAction;
 import com.sunwayland.core.vo.FieldErrorMsg;
+import com.sunwayland.web.vo.ErrCode;
 
 
 
-@ControllerAdvice( {"com.sunwayland.web.controller" , "com.sunwayland.console.controller" })
+@ControllerAdvice( {"com.sunwayland.web.controller"})
 @ResponseBody
 public class ExceptionHandl extends GenericAction {
  
@@ -39,23 +41,22 @@ public class ExceptionHandl extends GenericAction {
 
  
 
-	  //----------------------------未知错误!---------------------------------------------
-	
+	  //----------------------------未知错误!--------------------------------------------- 
 	 // @ExceptionHandler( value=Exception.class )
 	  public Object  e1( Throwable  e  ){ 
-		 log.info("xxxxxxxxxxe1:" + e.getClass() ); 
+		 log.error("xxxxxxxxxxe1:" + e.getClass() ); 
 //		 IllegalStateException
 		 printStackTrace(e);
 		 return   RESP_ERR( e.getClass().getName()) ;   
 	  }
 	  
-//	  @ExceptionHandler( value=RuntimeException.class )
-//	  public Object  exxx( Throwable  e , HttpRequest request){ 
-//		 log.info("xxxxxxxxxxe1:" + e.getClass() + request.getClass()); 
-//		 IllegalStateException
-//		 printStackTrace(e);
-//		 return   RESP_ERR( e.getClass().getName()) ;   
-//	  }
+	  @ExceptionHandler( value=UnknownHostException.class )
+	  public Object  exxx( Throwable  e ){ 
+		 log.error("xxxxxxxxxxe1:" + e.getClass() ); 
+		 
+		 printStackTrace(e);
+		 return   RESP_ERR( e.getClass().getName()) ;   
+	  }
 	   
 	  
 	  
@@ -65,10 +66,10 @@ public class ExceptionHandl extends GenericAction {
 //	  })
 	  @ExceptionHandler(value ={RestClientException.class })
 	  public Object e2( Throwable e){
-		 log.info("e2"); 
+		 log.error("e2"); 
 		 log.error(e);
 		 printStackTrace(e);
-		 return  RESP_ERR("rest err");
+		 return  RESP_ERR( ErrCode.rest_err);
 	  }
 
 	  //-------------------------------------------------------------------------
@@ -79,7 +80,7 @@ public class ExceptionHandl extends GenericAction {
 	   */
 	  @ExceptionHandler({HttpSessionRequiredException.class  })
 	  public Object e3(Throwable e ){
-		  log.info("e3");
+		  log.error("e3");
 		 return   RESP_ORDER(JsOrder.login);
 	  }
 	  
@@ -91,7 +92,7 @@ public class ExceptionHandl extends GenericAction {
 	  //-----------------------------字段验证 --------------------------------------------
 	  @ExceptionHandler( value=ValidateException.class)
 	  public Object  e6 ( Throwable e ){
-		  log.info("e6");
+		  log.error("e6");
 		  ValidateException ve  = (ValidateException) e ;
 		  List<BindingResult> results = ve.getValidateResults();
 		  

@@ -37,7 +37,7 @@ public class Contact  extends RestBody{
     @Pattern( regexp="[0-9]{8,11}" , message="tel 必须是8-12的数字格式!!" ,
 	     groups={ Create.class, Update.class})
     private String    tel  ; 
-    
+    @NotNull ( groups = { Create.class})
     private String    mobile_phone  ; 
     private String    country  ; 
     private String    province  ; 
@@ -45,9 +45,8 @@ public class Contact  extends RestBody{
     private String    address  ; 
     private String    zip_code  ;
     
-    
-    // 短信验证吗; 
-    @NotNull
+    //===============ext ==============
+    // 短信验证吗;  
     private String  code ; 
     
     

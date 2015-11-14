@@ -8,13 +8,12 @@ import com.sunwayland.rest.basic.VarFieldEnum;
 
 
 public class SuffixParams  extends Params  {
- 
-     
+  
     
    	public MultiHashMap map = new MultiHashMap(1); 
    	
 	@Override
-	public Map getMap() {   
+	public MultiHashMap getMap() {   
 	    return this.map ;
 	  
 	}
@@ -36,7 +35,7 @@ public class SuffixParams  extends Params  {
 	}
 	
 	public  SuffixParams  extend_device (boolean value ){
-		this.put(VarFieldEnum.extend_devices.toString()	, value  );
+		this.put(VarFieldEnum.extend_device.toString()	, value  );
 		return this ; 
 	}
 

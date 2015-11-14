@@ -3,52 +3,41 @@ package com.sunwayland.web.vo;
 import java.lang.annotation.Documented;
 
 
-public class ErrCode {
+public enum ErrCode {
 		
-	
-	public static  int  unknown = 0 ;
-	 /**  验证码错误 */
-    public static  int  indefifyErr= 1 ;
-    
-	 /**licence 错误 */
-    public static  int  licenceErr = 2; 
-    
-	 /** 采集占sn 错误*/
-    public static  int  station_sn = 3 ;
-     
-    /**
-     * 为 user 添加  可管理proj时 , proj 重复, ( 即 之前已经 关联过该 proj )
-     */ 
-    public static  int  hasManageProj = 4 ; 
-     
-    
-    
-	public static int getUnknown() {
-		return unknown;
-	}
-	public static void setUnknown(int unknown) {
-		ErrCode.unknown = unknown;
-	}
-	public static int getIndefifyErr() {
-		return indefifyErr;
-	}
-	public static void setIndefifyErr(int indefifyErr) {
-		ErrCode.indefifyErr = indefifyErr;
-	}
-	public static int getLicenceErr() {
-		return licenceErr;
-	}
-	public static void setLicenceErr(int licenceErr) {
-		ErrCode.licenceErr = licenceErr;
-	}
-	public static int getStation_sn() {
-		return station_sn;
-	}
-	public static void setStation_sn(int station_sn) {
-		ErrCode.station_sn = station_sn;
-	}
+	 // 手机号码格式不正确;
+	 phone_pattern_err, 
 	 
-	  
+	 // 手机号码错误
+	 phone_err,
+	 
+	 unknown ,  
+     // 图片 验证码 无效; 
+     identify_err, 
+     
+     //  短信验证码无效
+     sms_verify_err,   
+     // 重复发动
+     send_repetition, 
+     // 短信发送无效
+     sms_error,
+     pass_err,
+     // 接口调用错误
+     rest_err, 
+     // account 不存在;
+     no_account,
+     // email 发送失败;
+     send_maill_err, 
+     // account_name_
+     account_name_exist, 
+     //account  admin 用户 无 预留email;
+     no_account_email,
+     // 页面失效
+     page_expire ,
+   
+     
+    
+     
     
     
     

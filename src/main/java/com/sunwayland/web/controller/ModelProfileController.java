@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sunwayland.core.utils.Utils;
 import com.sunwayland.core.validate.type.Create;
 import com.sunwayland.core.validate.type.Update;
+import com.sunwayland.core.vo.WebPage;
 import com.sunwayland.rest.ThingLinxRest;
 import com.sunwayland.rest.eneityV2.Profile;
 import com.sunwayland.rest.eneityV2.Tag;
 import com.sunwayland.rest.eneityV2.Tag.profileLog;
 import com.sunwayland.rest.eneityV2.Trigger;
 import com.sunwayland.rest.eneityV2.User;
+import com.sunwayland.rest.params.SuffixParams;
+import com.sunwayland.rest.params.UrlParams;
+import com.sunwayland.rest.url.SystemModelProfileTriggerUrl;
 import com.sunwayland.web.exceptionhandler.ExceptionHandl;
 import com.sunwayland.web.vo.Global;
 
@@ -31,6 +36,10 @@ public class ModelProfileController extends ExceptionHandl {
  
 
 	private Logger log = Logger.getLogger(ModelProfileController.class);
+	
+	@Autowired
+	public  ThingLinxRest  rest ; 
+	
 
 	// ========================= profile
 	// ===============================================
@@ -129,11 +138,40 @@ public class ModelProfileController extends ExceptionHandl {
 	}
 
 	
-	@RequestMapping(value = "/triggers", method = RequestMethod.GET)
-	public Object getAllTriggersOfProfile(@ModelAttribute(Global.session_key_user) User user, String profile) {
-		return rest.profile.getAllTriggerOfSMProfile(user , profile);
+	@RequestMapping(value = "/triggers", params={"profile"},method = RequestMethod.GET)
+	public Object queryTriggersOfProfile(@ModelAttribute(Global.session_key_user) User user,
+			String profile,
+			WebPage page 
+			) {
+		
+		SuffixParams total = SuffixParams.get();
+		total.calc_sum(true);
+		
+		SuffixParams data = SuffixParams.get();
+		data.offset(page.getOffset()).limit(page.getLimit())
+			.sort("id-");
+//	    data.sortDESC_ByCreateTime();
+		
+		return rest.https.query(user,
+				SystemModelProfileTriggerUrl.selectAllTriggerOfSysProfile,
+				 UrlParams.get().profile_id(profile),
+				total, data );
+		
+		
+		
+		// return rest.profile.getAllTriggerOfSMProfile(user , profile);
 
 	}
+	
+	@RequestMapping( value = "/triggers/{triger_id}", method= RequestMethod.GET )
+	public Object getTrigerById (@ModelAttribute(Global.session_key_user) User user,
+					@PathVariable String triger_id ){
+		
+		//rest.https.get(user, "", urlParams, suffixParams);
+		return  null ;
+		
+	}
+	
 
 	
 	@RequestMapping(value = "/triggers", method = RequestMethod.PUT)

@@ -2,27 +2,65 @@ package com.sunwayland.rest.eneityV2;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sunwayland.core.validate.type.Create;
+import com.sunwayland.core.validate.type.Update;
+import com.sunwayland.core.validate.type.VerifyEmail;
+import com.sunwayland.core.validate.type.VerifyPhone;
+ 
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
 
 	
+	
+	@NotNull( groups={ Update.class , VerifyPhone.class , VerifyEmail.class })
 	private String  id ; 
 	private String  account_id ; 
 	private String  desc ; 
-	@NotNull
+	
+	
+	@NotNull( groups={ Create.class})
 	private String  username ; 
-	@NotNull
+	@NotNull( groups={ Create.class})
 	private String  password ; 
 	private String  is_super_user ; 
+	
+	private String  sex ;
+	private String  first_name ;
+	private String  last_name ;
+
+	private String nickname ;
+
+	private String birthday ; 
+	
+	
 	private String  address ; 
+	
+	@Email( groups ={ Create.class , VerifyEmail.class } )
 	private String  email ; 
+	private String email_verified;  // 0 :|| 1;
+	
+	@NotNull( groups={ VerifyPhone.class} ) 
+	private String  mobile_phone ; 
+	
+	private String mobile_phone_verified;  // 0 :|| 1;
+
+	
 	private String  last_login_ip ; 
 	private String  mail_notice ; 
+
 	private String  sms_notice ; 
-	private String  wechat_notice ; 
+	
 	private String  create_time ; 
+	
+	private String  wechat_notice ; 
+	
 	private String last_login_time ;
 	
-	private String  mobile_phone ; 
+	
 	
 	
   //============= ext =============
@@ -33,8 +71,11 @@ public class User {
 	private String accessKey ; 
 	
 	//验证码; 
+	@NotNull( groups={ VerifyPhone.class })
 	private String  verifi ; 
 	
+	
+	private Long   sendVerifyEmailTime ;
 	
 	//============= ext =============
 	
@@ -42,6 +83,59 @@ public class User {
 	
 	public String getId() {
 		return id;
+	}
+ 
+	public long getSendVerifyEmailTime() {
+		return sendVerifyEmailTime;
+	}
+
+	public void setSendVerifyEmailTime(Long sendVerifyEmailTime) {
+		this.sendVerifyEmailTime = sendVerifyEmailTime;
+	}
+
+	public String getFirst_name() {
+		return first_name;
+	}
+
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
+
+	public String getLast_name() {
+		return last_name;
+	}
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public String getEmail_verified() {
+		return email_verified;
+	}
+	public void setEmail_verified(Boolean email_verified) {
+		this.email_verified = email_verified?"1":"0";
+	}
+	public String getMobile_phone_verified() {
+		return mobile_phone_verified;
+	}
+	public void setMobile_phone_verified(Boolean mobile_phone_verified) {
+		this.mobile_phone_verified = mobile_phone_verified?"1":"0";
 	}
 	public String getMobile_phone() {
 		return mobile_phone;
@@ -69,6 +163,16 @@ public class User {
 	}
 	 
 	 
+//	public String getSex() {
+//		return sex;
+//	}
+//	public void setSex(String sex) {
+//		this.sex = sex;
+//	}
+	
+	
+	
+ 
 	public String getCompany_name() {
 		return company_name;
 	}
@@ -114,6 +218,7 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	 
 	public String getEmail() {
 		return email;
 	}
@@ -155,6 +260,13 @@ public class User {
 	}
 	public void setLast_login_time(String last_login_time) {
 		this.last_login_time = last_login_time;
+	}
+
+	@Override
+	public String toString() {
+		 
+		return  "[" + this.getCompany_name() +","+ this.getUsername() +"]" ;
+		
 	}
  
  

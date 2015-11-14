@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sunwayland.core.generic.GenericAction;
+import com.sunwayland.rest.ThingLinxRest;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.rest.params.SuffixParams;
 import com.sunwayland.rest.params.UrlParams;
@@ -33,6 +35,9 @@ public class DriverController  extends GenericAction{
 	
 	
 	// 获取 driver 列表; 
+	@Autowired
+	public  ThingLinxRest  rest ; 
+	
 	
 	@RequestMapping( value="/dtu" , method=RequestMethod.GET )
 	public Object getDTUDrivers ( 
@@ -43,12 +48,13 @@ public class DriverController  extends GenericAction{
 						SuffixParams.get().put("category", "CHANNEL")
 						);
 		 
+//		return rest.http.get( "/query/drivers", null, 
+//				SuffixParams.get().put("category", "CHANNEL")
+//				);
+		
 	}
 	
-	
-	
-	
-	
+	 
 	
 	@RequestMapping( value="/device" , method=RequestMethod.GET )
 	public Object getDeviceDrivers ( 
@@ -60,7 +66,10 @@ public class DriverController  extends GenericAction{
 				);
 		
 		
-		 
+//		return rest.http.get( "/query/drivers", null,
+//				SuffixParams.get().put("category", "DEVICE")
+//				);
+		
 		
 		
  

@@ -1,5 +1,6 @@
 package com.sunwayland.rest.params;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import com.sunwayland.rest.basic.FieldEnum;
@@ -19,6 +20,7 @@ public abstract class GenericParams {
 	 
 	 
 	 public  GenericParams put ( String  key , Object value) {
+		 if(null == value) return this ;
 		 this.getMap().put(key, value.toString());
 		 
 		 return this; 
@@ -42,25 +44,29 @@ public abstract class GenericParams {
 	 }
 	 
 	 
-	 /**
-	  *  + , -  好 会 urlDecode 转义 , 恶心;  
+	 /** 
 	  * @param field
 	  * @param isDESC
 	  * @return
 	  */
-	 public  GenericParams sorts ( FieldEnum field , Boolean  isDESC  ){
-		 String sorts = VarFieldEnum.sorts.toString();
-		 
-//		  Object object = this.getParams().get( sorts);
-//		 
-//		 if(null == object ){
-			 this.put(sorts, field.toString() +( isDESC==true?"+":"-") );
-//		 }else{
-//			string +="&sorts="+field.toString() +( isDESC==true?"+":"-");
-//			this.put(sorts, string);
-//		 }
+	 public  GenericParams sortDESC_ByCreateTime(    ){ 
+		   this.put( "sorts" ,  "create_time-" ); 
+		   					   //create_time
+ 
 		 return this ; 
 	 }
+	 	
+	 /**
+	  * value 必须为:  field-
+	  * @param value
+	  * @return
+	  */ 
+	 public  GenericParams sort(   String  value   ){ 
+		   this.put( "sorts" , value ); 
+
+		 return this ; 
+	 }
+	 
 	 
 	 public GenericParams offset( int  value ){
 		  this.put(VarFieldEnum.offset.toString(), value+"");

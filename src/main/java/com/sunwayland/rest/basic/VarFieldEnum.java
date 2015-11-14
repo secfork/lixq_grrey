@@ -4,7 +4,7 @@ public enum VarFieldEnum {
 
 	system_model_id,
 	extend_profile,
-	extend_devices,
+	extend_device,
 	sorts,
 	limit,
 	offset,

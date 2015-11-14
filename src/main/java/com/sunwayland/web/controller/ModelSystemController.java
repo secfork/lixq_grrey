@@ -41,6 +41,9 @@ public class ModelSystemController extends GenericAction {
  
 
 	private Logger log = Logger.getLogger(ModelSystemController.class);
+	@Autowired
+	public  ThingLinxRest  rest ; 
+	
 
 	// =============================== system Model
 	// =================================
@@ -71,7 +74,7 @@ public class ModelSystemController extends GenericAction {
 		return rest.SystemModel.get(user,
 				SystemModelUrl.select,
 				UrlParams.get().system_model_id(pk),
-				SuffixParams.get()
+				SuffixParams.get().extend_device(false).extend_profile(false)
 				);
 
 	}

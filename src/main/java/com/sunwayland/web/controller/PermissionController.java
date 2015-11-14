@@ -2,6 +2,7 @@ package com.sunwayland.web.controller;
 
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sunwayland.core.generic.GenericAction;
+import com.sunwayland.rest.ThingLinxRest;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.rest.params.SuffixParams;
 import com.sunwayland.rest.params.UrlParams;
@@ -23,6 +25,10 @@ import com.sunwayland.web.vo.Global;
 @RequestMapping("permission")
 //@SessionAttributes( "user")
 public class PermissionController extends GenericAction {
+	
+	@Autowired
+	public  ThingLinxRest  rest ; 
+	
 
 	/**
 	 * 获得资源下的 所有用户组; 

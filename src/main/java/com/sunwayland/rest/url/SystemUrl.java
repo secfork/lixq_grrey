@@ -17,10 +17,12 @@ public class SystemUrl  {
 			public static final String stop   ="/systems/{system_id}/control/stop" ;
 			public static final String sync   ="/systems/{system_id}/sync" ;
 			
+			public static final String queryStatus = "/query/systems/status";
 			 
 			//点 下置数据; 
 			public static final String dumpdata = "/systems/{system_id}/control/write";
 					
+			
 			
 			
 			public static String  selectContact   = "/systems/{system_id}/contact";
@@ -37,15 +39,26 @@ public class SystemUrl  {
 	 // https ; 
 	 public static String  live    = "/systems/{system_id}/live";
 	 
-	 public static String  history        = "/systems/{system_id}/log/readinterval";
+	 /**
+	  * 历史趋势查询;
+	  */
+	 public static String  historyInterval        = "/systems/{system_id}/log/readinterval";
+	 public static String  historyReadRow        = "/systems/{system_id}/log/readraw";
 			
 	 
-	 public static String  alarmhistory   = "/systems/{system_id}/alarmhistory";
+	 // 活跃报警
 	 public static String  alarmcurrent   = "/systems/{system_id}/alarms";
+	 // 全部报警;
+	 public static String  alarmhistory   = "/systems/{system_id}/alarmhistory";
 
-			
-
-			
+/**
+	 /query/alarms?accesskey={accesskey}?active=[ -1 || 0 ||1 ]
+	 start={number}[&end={number}][&timestamp={timestamp}[&timestamp=...]][&close_time={close_time}][&close_time=...][&region_id={region_id}]
+	 [&type={number}[&type=...]][&info={*string*}][&severity= {number}[&severity=...]][&ack_id={ack_id}]
+	 [&class_id={number}[&class_id=...]][&sorts={field[-]}[&sorts=...]][&offset={start_item_index}]
+	 [&limit={max_count}][&calc_sum={true|false}]
+*/
+	public static String  queryAlarm = "/query/alarms";	
 		  
 	
 }

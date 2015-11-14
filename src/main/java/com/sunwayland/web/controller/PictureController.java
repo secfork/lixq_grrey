@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sunwayland.core.generic.GenericAction;
+import com.sunwayland.rest.ThingLinxRest;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.rest.params.UrlParams;
 import com.sunwayland.rest.url.SystemUrl;
@@ -28,7 +29,9 @@ public class PictureController extends GenericAction {
 	@Autowired
 	private ThinglinxOss  ossClient ;
 	 
-	 
+	@Autowired
+	public  ThingLinxRest  rest ; 
+	
 
    // ==================== 上传 system 图片 ==============================
 	@RequestMapping( value="/system" , method=  RequestMethod.POST   , params={"system_id"})

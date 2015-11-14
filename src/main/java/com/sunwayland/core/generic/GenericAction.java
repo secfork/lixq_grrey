@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sunwayland.core.JsOrder.JsOrder;
+import com.sunwayland.core.vo.webResult;
 import com.sunwayland.rest.ThingLinxRest;
 import com.sunwayland.web.vo.ErrCode;
 
@@ -14,14 +15,12 @@ import com.sunwayland.web.vo.ErrCode;
 @SessionAttributes("user")
 public class GenericAction    {
      
-	@Autowired
-	public  ThingLinxRest  rest ; 
-	
+
 	
 	public  static  Object  RESP ( Object  result ){
-		  HashMap map  = new HashMap (); 
-		  map.put("ret",result ) ; 
-		  return map ; 
+		  
+		  return   webResult.get().setRet(result);
+		 
 	}
 	
 	
@@ -33,41 +32,35 @@ public class GenericAction    {
 	
 	
 	
-	public static Object  RESP_MSG ( Object object ){
-		  HashMap map  = new HashMap (); 
-		  map.put("msg",object) ; 
-		  return map ; 
+	public static Object  RESP_MSG ( Object object ){ 
+		  
+		  return  webResult.get().setMsg(object); 
 	}
 	
-	public  static  Object  RESP ( Object...  result ){
-		  HashMap map  = new HashMap (); 
-		  map.put("ret",result ) ; 
-		  return map ; 
+	public  static  Object  RESP ( Object...  result ){ 
+		
+		  return webResult.get().setRet(result);
+		  
 	}
 	
  
 	 
-	public  static  Object  RESP_ERR ( Object  result ){
-		HashMap map  = new HashMap (); 
-		map.put("err",result ) ; 
-		return map ; 
+	public  static  Object  RESP_ERR ( Object  result ){ 
+		return  webResult.get().setErr(result);
 	}
 	
 	
 	
 	
 	
-	public static Object RESP_PAGE (int total , List list){
-		HashMap map  = new HashMap (); 
-		map.put("total",total ) ; 
-		map.put("data",list ) ; 
-		return map ; 
+	public static Object RESP_PAGE (int total , List list){ 
+		
+		return  webResult.get().setTotal(total).setData(list);
 	}
 	
-	 public static  Object  RESP_ORDER (JsOrder  order){
-		  HashMap map  = new HashMap (); 
-		  map.put("order", order) ;
-		  return map ;
+	 public static  Object  RESP_ORDER (JsOrder  order){ 
+		 
+		  return   webResult.get().setOrder(order);
 	 }
 	  
 	 

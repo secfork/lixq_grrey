@@ -41,7 +41,10 @@ public class ModelDeviceController extends GenericAction {
  
 
     private Logger log = Logger.getLogger(ModelDeviceController.class);
-
+	
+    @Autowired
+	public  ThingLinxRest  rest ; 
+	
     
 	@RequestMapping(  method=RequestMethod.POST)
 	public Object  createDeviceModel  (	

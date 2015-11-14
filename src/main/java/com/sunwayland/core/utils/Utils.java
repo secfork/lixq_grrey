@@ -37,16 +37,7 @@ public class Utils {
 	
 	 
 	
-	public static String iso2Utf ( String  s)     {
-		 try {
-			s =  new String(  s.getBytes("iso-8859-1" ) , "utf-8");
-			return s ; 
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 return null ; 
-	}
+ 
 	
 	/**
 	 * Md5 算法!!!
@@ -81,6 +72,26 @@ public class Utils {
 	        return gson;
 	 }
 	
+	 
+	 public static String  iso2utf (String s ){
+		 try {
+			return  new String( s.getBytes("iso-8859-1") ,"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
+	 }
+	 
+	 public static String  utf2iso (String s ){
+		 try {
+			return  new String(s.getBytes("utf-8"), "iso-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 return s ; 
+	 }
 	 
 	
 	/**
@@ -176,6 +187,7 @@ public class Utils {
 		 return sss ; 
 	}
 	
+  
 	
 	private static String  nom = "0123456789";
 	private static String  nom1 = "0123456789qwertyuiopasdfghjklzxcvbnm";

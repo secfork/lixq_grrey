@@ -1,5 +1,6 @@
 package com.sunwayland.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sunwayland.core.generic.GenericAction;
 import com.sunwayland.core.vo.WebPage;
+import com.sunwayland.rest.ThingLinxRest;
 import com.sunwayland.rest.eneityV2.Role;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.rest.params.SuffixParams;
@@ -25,6 +27,12 @@ import com.sunwayland.web.vo.Global;
 //@SessionAttributes("user")
 public class RoleController  extends GenericAction{
 
+	
+	@Autowired
+	public  ThingLinxRest  rest ; 
+	
+	
+	
 	@RequestMapping( method=RequestMethod.POST)
 	public Object createrole( @ModelAttribute(Global.session_key_user) User user ,
 							@RequestBody Role role 

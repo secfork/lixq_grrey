@@ -104,6 +104,11 @@
 			 	<version>4.3.1</version>
 			 </dependency>  
 			 
+			  <dependency>
+			   <groupId>org.apache.httpcomponents</groupId>
+			   <artifactId>httpasyncclient</artifactId>
+			   <version>4.0-beta4</version>
+			  </dependency>
 			 
 			  
 			 
@@ -122,25 +127,6 @@
 		    <version>2.5.2</version>  
 		</dependency>  
 		
-		
-	  <!--   <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>1.3.0.RELEASE</version>
-        </dependency>  
-        
-	    <dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-data-redis</artifactId>
-			<version>1.0.1.RELEASE</version>
-		</dependency>    
-	  
-		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session</artifactId>
-			<version>1.0.1.RELEASE</version>
-		</dependency>
-    -->
 	 
 	 
 	</dependencies>
@@ -165,7 +151,7 @@
 				<configuration>
 					<port>8082</port>
 					<path>/thinglinx</path>
-					<uriEncoding>UTF-8</uriEncoding>
+					<uriEncoding>iso-8859-1</uriEncoding>
 					<finalName>thinglinx</finalName>
 					<server>tomcat7</server>
 				</configuration>

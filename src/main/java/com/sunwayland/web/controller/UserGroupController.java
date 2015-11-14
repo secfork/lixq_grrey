@@ -1,5 +1,6 @@
 package com.sunwayland.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.sunwayland.core.generic.GenericAction;
 import com.sunwayland.core.validate.type.Update;
 import com.sunwayland.core.vo.WebPage;
+import com.sunwayland.rest.ThingLinxRest;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.rest.eneityV2.UserGroup;
 import com.sunwayland.rest.params.SuffixParams;
@@ -26,6 +28,11 @@ import com.sunwayland.web.vo.Global;
 //@SessionAttributes("user")
 public class UserGroupController extends GenericAction {
 
+		
+	@Autowired
+	public  ThingLinxRest  rest ; 
+	
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public Object queryUserGroup(  
 			@ModelAttribute(Global.session_key_user) User user, WebPage page) {
@@ -97,7 +104,7 @@ public class UserGroupController extends GenericAction {
 			@PathVariable String  user_id
 			) {
 
-		return rest.https.delete(user, UserGroupUrl.delOrAdd_usersOfgorup_byId,
+		return rest.https.delete(user, UserGroupUrl.del_usersOfgorup_byId,
 				null,
 				UrlParams.get().group_id(group_id).user_id(user_id),
 				null);
@@ -110,10 +117,12 @@ public class UserGroupController extends GenericAction {
 			@PathVariable String  user_id
 			) {
 
-		return rest.https.put(user, UserGroupUrl.delOrAdd_usersOfgorup_byId,
+		// add_usersOfgorup_byId = "/users/{user_id}/groups";// ?group_id = xxx ;
+		return rest.https.put(user, UserGroupUrl.add_usersOfgorup_byId,
 				null,
-				UrlParams.get().group_id(group_id).user_id(user_id),
-				null);
+				UrlParams.get().user_id(user_id),
+				SuffixParams.get().group_id(group_id)
+				);
 
 	}
 

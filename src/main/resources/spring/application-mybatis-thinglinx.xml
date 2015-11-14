@@ -17,7 +17,8 @@
 	
 	 <!-- 注解式事务管理 -->	
 	<!-- <tx:annotation-driven transaction-manager="txManager"/> -->
-	 
+	  
+	  
 	
 	<bean id="thingLinxDbS" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		

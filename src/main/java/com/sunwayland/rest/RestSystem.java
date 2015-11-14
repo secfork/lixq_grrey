@@ -78,22 +78,7 @@ public class RestSystem extends HttpsRest {
 		return this.get( user , SystemUrl.query, UrlParams.get() , QueryParmas);
 	}
 
-	/*
-	 * 下置点数据; 
-	 */
-	public Map liveWrite(User user , String system_id , String tag_name , Object value ){
-		
-		HashMap<String, String> body = new HashMap<String, String>();
-		body.put("name", tag_name);
-		body.put("value", value.toString() );
-		
-		Object[]  p ={body};
-		return this.post(user, SystemUrl.dumpdata, p,
-						UrlParams.get().system_id(system_id),
-						SuffixParams.get());
-		
-		 
-	}
+ 
 	
 	
 	

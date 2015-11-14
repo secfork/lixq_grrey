@@ -40,9 +40,9 @@ public class RegistFilter  implements Filter   {
 							FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request ;
 		
-	     log.info( "来访ip = "+request.getRemoteAddr() +" ---" + req.getRequestURL() );
+	    // log.info( "来访ip = "+request.getRemoteAddr() +" ---" + req.getRequestURL() );
 	      
-	     log.info( "来访 session id = "+ request.getClass() );
+	    // log.info( "来访 session id = "+ request.getClass() );
 		
 	     //ServletActionContext.getRequest().getSession();
 	      
