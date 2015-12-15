@@ -62,7 +62,9 @@ public class ModelSystemController extends GenericAction {
 		page.setItemsPerPage(Global.max_ItemsPerPage);
 		page.setCurrentPage(1);
 
-		return rest.SystemModel.querySystemModel(user, QueryParams.get().limit(Global.max_ItemsPerPage).offset(0));
+		return rest.SystemModel.querySystemModel(user,
+				QueryParams.get().limit(Global.max_ItemsPerPage).offset(0)
+				);
 
 	}
 
@@ -85,13 +87,16 @@ public class ModelSystemController extends GenericAction {
 	 */
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public Object createSystemModel(@ModelAttribute(Global.session_key_user) User user,
+	public Object createSystemModel(
+			@ModelAttribute(Global.session_key_user) User user,
 			@Validated(Create.class) @RequestBody SystemModel systemModel,
 			BindingResult result) {
 		Utils.handlerBindngResult(result);
 
 		// 创建 system Model ;
-		Map s = rest.SystemModel.createSystemModel(user, systemModel.getName(), systemModel);
+		Map s = rest.SystemModel.createSystemModel(user, systemModel.getName(),
+				systemModel);
+		
 		// 创建默认 profile ;
 		Profile p = new Profile();
 		p.setDesc("Default Profile ");
@@ -99,6 +104,7 @@ public class ModelSystemController extends GenericAction {
 		p.setSystem_model(s.get(Global.ret_key).toString());
 
 		Map s1 = rest.SystemModel.addProfile2SystemModel(user, p);
+		
 		return s;
 
 	}
@@ -112,7 +118,8 @@ public class ModelSystemController extends GenericAction {
 	 */
 	
 	@RequestMapping(method = RequestMethod.DELETE)
-	public Object deleteSystemModel(@ModelAttribute(Global.session_key_user) User user, String uuid) {
+	public Object deleteSystemModel(
+			@ModelAttribute(Global.session_key_user) User user, String uuid) {
 
 		return rest.SystemModel.deleteSystemModel(user , uuid);
 	}
@@ -143,7 +150,9 @@ public class ModelSystemController extends GenericAction {
 	 */
 	
 	@RequestMapping(value = "/devices", method = RequestMethod.GET)
-	public Object getAllDeviceOfSM(@ModelAttribute(Global.session_key_user) User user, String system_model) {
+	public Object getAllDeviceOfSM(
+			@ModelAttribute(Global.session_key_user) User user,
+			String system_model) {
 
 		return rest.SystemModel.getAllDeviceOfSystemModel(user, system_model);
 
@@ -175,7 +184,8 @@ public class ModelSystemController extends GenericAction {
 	 */
 	
 	@RequestMapping(value = "/devices", method = RequestMethod.DELETE)
-	public Object deleteDeviceOfSM(@ModelAttribute(Global.session_key_user) User user, String system_model, // url
+	public Object deleteDeviceOfSM(@ModelAttribute(Global.session_key_user) User user,
+			String system_model, // url
 			// 参数;
 			String id // device id url 参数;
 	) {
@@ -215,7 +225,8 @@ public class ModelSystemController extends GenericAction {
 
 	
 	@RequestMapping(value = "/tags", method = RequestMethod.GET)
-	public Object getAllTagOfSystemModel(@ModelAttribute(Global.session_key_user) User user,
+	public Object getAllTagOfSystemModel(
+			@ModelAttribute(Global.session_key_user) User user,
 			String system_model) {
 		return rest.SystemModel.getAllTagOfSystemModel(user,system_model);
 
@@ -224,7 +235,8 @@ public class ModelSystemController extends GenericAction {
 	
 	@RequestMapping(value = "/tags", method = RequestMethod.PUT)
 	public Object updateTagOfSystemModel(@ModelAttribute(Global.session_key_user) User user,
-			@Validated(Update.class) @RequestBody Tag tag, BindingResult result) {
+			@Validated(Update.class) @RequestBody Tag tag,
+			BindingResult result) {
 
 		Utils.handlerBindngResult(result);
 		return rest.SystemModel.updateTagOfSystemModel(user , tag);
@@ -232,7 +244,9 @@ public class ModelSystemController extends GenericAction {
 
 	
 	@RequestMapping(value = "/tags", method = RequestMethod.DELETE)
-	public Object deleteTagOfSystemModel(@ModelAttribute(Global.session_key_user) User user, String id,
+	public Object deleteTagOfSystemModel(
+			@ModelAttribute(Global.session_key_user) User user, 
+			String id,
 			String system_model) {
 
 		return rest.SystemModel.deleteTagOfSystemModel(user,system_model, id);

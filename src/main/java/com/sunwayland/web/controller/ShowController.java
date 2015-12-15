@@ -94,8 +94,13 @@ public class ShowController extends GenericAction {
 		
 		params.getMap().put("start", start);
 		params.getMap().put("end", end);
-		params.getMap().put("count", num >100?100:num );
-		params.limit(num);
+		//采样的条数，即每一个TAGID在[start, end]区间内以等时间间隔的形式采样的记录数，最大为1000 ;
+		params.getMap().put("count", num >400?400:num );
+	 
+		
+		
+		
+		
 		
 		params2.getMap().put("t", start);
 		//  analog : linear ;,
@@ -109,7 +114,7 @@ public class ShowController extends GenericAction {
 		}
 		
 		//判断起始时间和结束时间，当两者差距小于24小时，改用查询原始值接口
-		String  url = (end - start) > 1000*60*60*24? 
+		String  url = (end - start) > 1000*60*60*6? 
 			SystemUrl.historyInterval:
 			SystemUrl.historyReadRow;
 		 
@@ -125,7 +130,10 @@ public class ShowController extends GenericAction {
 						 params2);
 		
 		
-	    Map map2 = rest.System.get( user ,url, UrlParams.get().system_id(system_uuid), params);
+	    Map map2 = rest.System.get( user ,url, 
+	    		UrlParams.get().system_id(system_uuid),
+	    		
+	    		params);
 
 	    return  new Object[]{ map , map2 };
 	}	
@@ -282,12 +290,7 @@ public class ShowController extends GenericAction {
 			  
 			){ 
 		
-		
-		String queryString = req.getQueryString();
 		 
-		 
-		log.info(params);
-		log.info( queryString );
 		
 		SuffixParams total  = SuffixParams.get();
 		SuffixParams data  = SuffixParams.get();
@@ -297,6 +300,7 @@ public class ShowController extends GenericAction {
 		total.calc_sum(true);
 		
 		data.getMap().putAll(params);
+		data.getMap().put("sorts", "id-");
 		
 		Map query = rest.https.query(user, SystemUrl.queryAlarm, null , total , data);
 		

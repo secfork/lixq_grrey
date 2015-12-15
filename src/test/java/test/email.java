@@ -43,7 +43,7 @@ public class email {
 	}
 	
 	@Test
-	public void test(){
+	public void test() throws MessagingException{
 		   MailInfo mailInfo = new MailInfo();  
 	        mailInfo.setMailServerHost("smtp.qq.com");  
 	        mailInfo.setMailServerPort("25");  

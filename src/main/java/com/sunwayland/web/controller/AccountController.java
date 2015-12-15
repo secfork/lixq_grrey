@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,7 @@ import com.sunwayland.web.vo.Global;
 @RequestMapping("account")
 public class AccountController extends GenericAction {
 	
+	Logger  log = Logger.getLogger(AccountController.class);
 	@Autowired
 	public  ThingLinxRest  rest ; 
 	
@@ -50,7 +52,8 @@ public class AccountController extends GenericAction {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(method = RequestMethod.POST)
-	public Object createAccountSetp1(@Validated(Create.class) @RequestBody Account account,
+	public Object createAccountSetp1(@Validated(Create.class)
+				@RequestBody Account account,
 			HttpServletRequest request,
 			BindingResult result
 			) {
@@ -78,7 +81,7 @@ public class AccountController extends GenericAction {
 			return resp;
 		}
 
-		// 验证码 激激活吗 ;
+		// 验证  激激活吗 ;
 		body.clear();
 		body.put("invitation_code", account.getInvitation_code());
 		Map resp2 = rest.http.post("/signin/verify/code", body, null, null);
@@ -92,13 +95,16 @@ public class AccountController extends GenericAction {
 		Object web_site = context.getBean("web_site");
 		String email = account.getAdmin().getEmail();
 
-		String uuid  = UUID.randomUUID().toString();
-		String registurl = web_site + "/#/access/signup?uuid=" + uuid ;
+		
+		String uuid  =  Utils.randomStr(32);
+		String sid = session.getId();
+		 
+		String registurl = web_site + "/#/access/signup?v=" + uuid+"&s=" + sid ;
 
 		try {
 			SimpleMail.sendAccountRegistEmail(email, registurl);
 		} catch (Exception e) {
-			 
+		    log.info(e);
 			return RESP_ERR(ErrCode.send_maill_err);
 		}
 
@@ -177,7 +183,8 @@ public class AccountController extends GenericAction {
 			@ModelAttribute(Global.session_key_user) User user,
 			String account_id
 			) {
-		return rest.http.get("/accounts/{account_id}", UrlParams.get().account_id(account_id), null);
+		return rest.http.get("/accounts/{account_id}", UrlParams.get().account_id(account_id), 
+				null);
 
 	}
 

@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sunwayland.core.validate.type.Create;
 import com.sunwayland.core.validate.type.Update;
@@ -11,7 +12,7 @@ import com.sunwayland.core.validate.type.VerifyEmail;
 import com.sunwayland.core.validate.type.VerifyPhone;
  
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
 
 	
@@ -64,18 +65,21 @@ public class User {
 	
 	
   //============= ext =============
+ 
 	private String  company_name;  // company_name ; 
 	
-	public Long  expires ; 
+	@JsonIgnore
+	public long  expires ; 
 	
+	@JsonIgnore
 	private String accessKey ; 
 	
 	//验证码; 
 	@NotNull( groups={ VerifyPhone.class })
 	private String  verifi ; 
 	
-	
-	private Long   sendVerifyEmailTime ;
+	@JsonIgnore
+	private Long   sendVerifyEmailTime = 0L;
 	
 	//============= ext =============
 	
@@ -262,13 +266,13 @@ public class User {
 		this.last_login_time = last_login_time;
 	}
 
-	@Override
-	public String toString() {
-		 
-		return  "[" + this.getCompany_name() +","+ this.getUsername() +"]" ;
-		
-	}
- 
+//	@Override
+//	public String toString() {
+//		 
+//		return  "[" + this.getCompany_name() +","+ this.getUsername() +"]" ;
+//		
+//	}
+// 
  
 	
 	

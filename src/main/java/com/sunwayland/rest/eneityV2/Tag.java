@@ -47,7 +47,7 @@ public class Tag  extends RestBody {
 	private String save_log ; 
 	
 	private String log_cycle ; 
-    
+     
 	
 	private String log_type ; 
 	
@@ -55,6 +55,7 @@ public class Tag  extends RestBody {
 	
 	 
 	
+ 
 	public String getSystem_model() {
 		return system_model;
 	}

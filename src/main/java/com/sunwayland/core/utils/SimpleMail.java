@@ -36,7 +36,7 @@ public class SimpleMail {
        mailInfo.setMailServerPort("25");  
        mailInfo.setValidate(true);   
        mailInfo.setUsername("thinglinx@sunwayland.com.cn");  
-       mailInfo.setPassword("thinglinx123456");// 您的邮箱密码   
+       mailInfo.setPassword("ASSERT:galaxyl9t");// 您的邮箱密码   
        
        mailInfo.setFromAddress("thinglinx@sunwayland.com.cn");  
         
@@ -50,7 +50,8 @@ public class SimpleMail {
 	   mailInfo.setToAddress(to);
 	   mailInfo.setSubject("继续完成您的ThingLinx帐号注册");
 
-	   mailInfo.setContent( crateMailBody("请确认您的邮箱，只差一步，您的注册就成功了！", "请在30分钟内完成", "完成注册", registurl ));  
+	   mailInfo.setContent( crateMailBody("请确认您的邮箱，只差一步，您的注册就成功了！",
+			   "请在30分钟内完成", "完成注册", registurl ));  
 	      
  	
  	 sendHtmlMail( mailInfo ); 
@@ -67,7 +68,7 @@ public class SimpleMail {
     	mail.setToAddress(to);
     	mail.setSubject("Thinglinx 找回密码 "); 
     	   		 
-    	mail.setContent( crateMailBody("点此按钮重设管理员帐号密码!", "请在30分钟内完成", "重设管理员帐号密码", changePassUrl)); 
+    	mail.setContent( crateMailBody("点此按钮重设管理员用户名及密码!", "请在30分钟内完成", "重设管理员用户名及密码", changePassUrl)); 
     	
     	 sendHtmlMail(mail);
     	
@@ -271,6 +272,7 @@ public class SimpleMail {
             //将MimeMultipart对象设置为邮件内容     
             mailMessage.setContent(mainPart);  
             Transport.send(mailMessage);//发送邮件  
+            log.info("send verify Email to : " + mailInfo.getToAddress());
             return true;  
           
     }  

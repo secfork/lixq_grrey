@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -19,13 +20,24 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.google.gson.Gson;
-import com.kevin.Note;
+import com.sunwayland.core.sms.Note;
 import com.sunwayland.rest.basic.CallType;
 import com.sunwayland.rest.eneityV2.User;
 import com.sunwayland.web.vo.Global;
 
 public class common {
 
+	@Test
+	public  void testMd5(){
+		  
+			
+//		String md5Crypt = Md5Crypt.md5Crypt("123".getBytes());
+		
+		Object a = true ;
+		System.out.println( "0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm".length());
+		
+	}
+	
 	
 	@Test
 	public void t1 () throws IOException{ 

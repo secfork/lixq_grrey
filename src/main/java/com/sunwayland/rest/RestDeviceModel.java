@@ -26,9 +26,11 @@ public class RestDeviceModel extends HttpsRest {
  
  
 
-	public Map queryDeviceModel( User user , GenericParams queryParams) {
+	public Object queryDeviceModel( User user , GenericParams queryParams) {
 		 
-		return this.get( user ,DeviceModelUrl.query, UrlParams.get(), queryParams);
+		return this.get( user ,DeviceModelUrl.query,
+				UrlParams.get(),
+				queryParams);
 
 	}
 

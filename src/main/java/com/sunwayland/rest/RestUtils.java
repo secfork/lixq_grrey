@@ -95,6 +95,8 @@ public class RestUtils {
 			e.printStackTrace();
 		} 
 		
+		log.info("  body "+ json );
+		
 		HttpEntity requestbody = new HttpEntity(json, headers);
 		return requestbody;
 

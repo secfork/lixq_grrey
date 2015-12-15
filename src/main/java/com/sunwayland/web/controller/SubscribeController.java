@@ -39,12 +39,18 @@ public class SubscribeController extends GenericAction{
 			){
 		 
 		SuffixParams suffixParams = SuffixParams.get();
+		
 		suffixParams.getMap().putAll(params);
+		
+		// type 是必填项 ;
+		suffixParams.getMap().put("type", "alarm");
 		
 		return rest.https.get(user, "/notify/subscribes", null, suffixParams);
 		 
 		 
 	}
+	
+	
 	
 	@RequestMapping( value="/create" , method = RequestMethod.POST)
 	public Object  createSub (
@@ -72,11 +78,13 @@ public class SubscribeController extends GenericAction{
 		
 		GenericParams params = UrlParams.get().put("subscribe_id", subscribe_id);
 		
-		return rest.https.delete(user, "/notify/subscribes", null, params , null );
+		return rest.https.delete(user, "/notify/subscribes/{subscribe_id}", null,
+				params , null );
 		 
 	}
 	
 	
+ 
 	
  
 	

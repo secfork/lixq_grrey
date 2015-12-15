@@ -43,7 +43,8 @@ public class RestSystemModelProfile extends HttpsRest {
 
 	public Map updateProfLogTag(User user, Tag tag) {
 
-		return this.put(user, SystemModelProfileTagUrl.updateLogTagOfSysProfile, tag,
+		return this.put(user, SystemModelProfileTagUrl.updateLogTagOfSysProfile,
+				tag,
 				UrlParams.get().profile_id(tag.getProfile()).tag_id(tag.getId()),
 				SuffixParams.get());
 	}
@@ -51,6 +52,7 @@ public class RestSystemModelProfile extends HttpsRest {
 	public Map deleteTagOfSystemModelProfile(User user, String profile_id, String tag_id) {
 
 		return this.delete(user, SystemModelProfileTagUrl.deleteLogTagOfProfile, null,
+				
 				UrlParams.get().profile_id(profile_id).tag_id(tag_id),
 				SuffixParams.get());
 
@@ -59,7 +61,8 @@ public class RestSystemModelProfile extends HttpsRest {
 	// ============== systemModel profle 下的 trigger ==========================
 
 	public Map addTrigger2SystemModelProfle(User user, Trigger trigger) {
-		return this.post(user, SystemModelProfileTriggerUrl.addTrigger2SysProflie, trigger,
+		return this.post(user, SystemModelProfileTriggerUrl.addTrigger2SysProflie,
+				trigger,
 				UrlParams.get().profile_id(trigger.getProfile()),
 				SuffixParams.get());
 	}
@@ -75,7 +78,8 @@ public class RestSystemModelProfile extends HttpsRest {
 	public Map updateTriggerOfSMProfile(User user, Trigger trigger) {
 
 		return this.put(user, SystemModelProfileTriggerUrl.updateTrigerOfSysProfile, trigger, 
-				UrlParams.get().profile_id(trigger.getProfile()).trigger_id(trigger.getId()),
+				UrlParams.get().profile_id(trigger.getProfile())
+				.trigger_id(trigger.getId()),
 
 				SuffixParams.get());
 	}

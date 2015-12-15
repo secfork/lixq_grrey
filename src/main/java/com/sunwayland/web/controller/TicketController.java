@@ -33,7 +33,9 @@ public class TicketController  extends GenericAction{
 		
 		// body = { sn:xxx, privilege:['p1', ...]}
 		
-		return rest.https.post(user, TicketUrl.bind, body, UrlParams.get().system_id(system_id), SuffixParams.get());		
+		return rest.https.post(user, TicketUrl.bind, body, 
+				UrlParams.get().system_id(system_id), 
+				SuffixParams.get());		
 		 
 	}
 	
@@ -51,7 +53,9 @@ public class TicketController  extends GenericAction{
 	public Object  getTicket ( @ModelAttribute( Global.session_key_user) User user ,
 								  @PathVariable  String system_id){
 		 
-		return rest.https.get(user, TicketUrl.getbox, UrlParams.get().system_id(system_id), SuffixParams.get());
+		return rest.https.get(user, TicketUrl.getbox, 
+				UrlParams.get().system_id(system_id), 
+				SuffixParams.get());
 		
 		 
 	}

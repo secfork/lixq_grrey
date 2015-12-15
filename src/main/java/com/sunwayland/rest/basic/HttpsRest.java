@@ -366,7 +366,8 @@ public class HttpsRest {
 		keybody.put("password", user.getPassword());
 
 		String url = https_http_Url + OrtherUrl.applyAccesskey;
-
+ 
+		
 		Map retkey = (Map) httpsRest.postForObject(url, RestUtils.createHttpRequestEntity(keybody, remoteIp), Map.class)
 				.get("ret");
 
@@ -377,7 +378,8 @@ public class HttpsRest {
 			// expires=1.438332063139E12}
 
 			user.expires = new Date().getTime() + 1000 * 60 * 8;
-
+				
+			logger.info(retkey);
 			logger.info(" 申请 accesskey := " + retkey.get("accesskey"));
 
 		} else {

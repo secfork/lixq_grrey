@@ -64,7 +64,8 @@ public class SystemController extends GenericAction {
 			) {
 		  
 		
-		GenericParams suffix_data  = SuffixParams.get().limit(page.getLimit()).offset(page.getOffset());
+		GenericParams suffix_data  = SuffixParams.get().limit(page.getLimit())
+													   .offset(page.getOffset());
 		 
 	    GenericParams suffix_total = SuffixParams.get().calc_sum(true);
 		
@@ -232,18 +233,21 @@ public class SystemController extends GenericAction {
 
 	
 	@RequestMapping(value = "/{systemuuid}", method = RequestMethod.GET)
-	public Object startSys(@ModelAttribute(Global.session_key_user) User user, @PathVariable String systemuuid) {
+	public Object startSys(@ModelAttribute(Global.session_key_user) User user,
+			@PathVariable String systemuuid) {
 		return rest.System.startSystem(user ,  systemuuid);
 	}
 
 	
 	@RequestMapping(value = "/{systemuuid}", method = RequestMethod.DELETE)
-	public Object stopSys(@ModelAttribute(Global.session_key_user) User user, @PathVariable String systemuuid) {
+	public Object stopSys(@ModelAttribute(Global.session_key_user) User user,
+			@PathVariable String systemuuid) {
 		return rest.System.stopSystem(user ,  systemuuid);
 	}
 
 	// 召唤实时; 
-	@RequestMapping(value = "/{systemuuid}", method = RequestMethod.POST  , params= {"type"})
+	@RequestMapping(value = "/{systemuuid}", method = RequestMethod.POST  , 
+			params= {"type"})
 	public Object callSys(
 			@ModelAttribute(Global.session_key_user) User user,
 			@PathVariable String systemuuid ,

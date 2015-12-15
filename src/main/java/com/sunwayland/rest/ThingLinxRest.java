@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.Socket;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
@@ -176,7 +177,7 @@ public class ThingLinxRest {
 		keyStore.load(in, ar);
 
 		SSLContextBuilder builder = SSLContexts.custom().loadTrustMaterial(keyStore, new TrustSelfSignedStrategy());
-
+		 
 		SSLContext sslcontext = builder.build();
 
 		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
@@ -184,6 +185,9 @@ public class ThingLinxRest {
 				new StrictHostnameVerifier()
 				);
 		 
+		Socket socket = sslsf.createSocket( null);
+		
+	
 		//===========
 		
 		PoolingHttpClientConnectionManager  pool_connectMangeer  = 
@@ -195,13 +199,15 @@ public class ThingLinxRest {
 	 			new HttpHost("172.18.16.254",443 ,"https")
 	 			
 	 			), 50);
-		 
+	 	 
 		
 		// rest 超时 ;
-		RequestConfig config = RequestConfig.custom().setConnectTimeout(30*1000).build();
+		RequestConfig config = RequestConfig.custom()
+				.setConnectTimeout( 1000 )
+				.setConnectionRequestTimeout( 200 )
+				.build();
 		
-		
-
+		 
  	   CloseableHttpClient httpclient1 = HttpClientBuilder.create()
  			   		 
  	   					.setConnectionManager( pool_connectMangeer )
@@ -213,37 +219,18 @@ public class ThingLinxRest {
 						  		 
  	   
  	   
-		CloseableHttpClient httpclient2 = HttpClientBuilder.create()
-				//  .setConnectionManager(pool_connectMangeer)			
-				// .setSslcontext(sslcontext)
-				 .setSSLSocketFactory(sslsf)
-				 
-				 .build();
+		 HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+		
+		   clientBuilder.setSSLSocketFactory(sslsf); 
+		   clientBuilder.setDefaultRequestConfig(config);	 
 		 
-		
-		
-		//====================================
-		
-		PoolingNHttpClientConnectionManager asyncManager = new PoolingNHttpClientConnectionManager(
-				  new DefaultConnectingIOReactor(IOReactorConfig.DEFAULT)
-				);
-		 
-		
-		CloseableHttpAsyncClient  httpAsyncClient = HttpAsyncClientBuilder.create()
-								.setConnectionManager(asyncManager) 
-								.setSSLContext(sslcontext)
-								.build();
-		
-		
+		 CloseableHttpClient httpclient2 = clientBuilder.build();
+		  
 		
 		//====================================
 		 
-		HttpComponentsClientHttpRequestFactory httpRequestFactory = 
-				new HttpComponentsClientHttpRequestFactory( httpclient2 );
+		HttpComponentsClientHttpRequestFactory httpRequestFactory =  new HttpComponentsClientHttpRequestFactory( httpclient2 ); 
 		
-		HttpComponentsAsyncClientHttpRequestFactory  asyncRequestFactory = 
-				new HttpComponentsAsyncClientHttpRequestFactory(httpAsyncClient);
-	 
 		return httpRequestFactory;
 		
 //		return  asyncRequestFactory;
@@ -253,6 +240,8 @@ public class ThingLinxRest {
 		@Override
 		public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
  
+			logger.info("  thread total unmer"+ Thread.activeCount() );
+			
 			logger.info("rest : " + request.getMethod() + " : url : " + request.getURI().toString());
 		//	logger.info("rest : "+ request.getMethod() +" : body : " +  new String(body) );
 			  

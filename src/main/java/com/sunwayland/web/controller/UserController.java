@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javassist.bytecode.analysis.Util;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -58,13 +59,12 @@ public class UserController extends GenericAction {
 	@Autowired
 	public  ThingLinxRest  rest ; 
 	
-	 
-	 
-
+	  
 	 
 
 	@RequestMapping(method = RequestMethod.GET) 
-	public Object queryUsers(@ModelAttribute(Global.session_key_user) User user, WebPage page) {
+	public Object queryUsers(@ModelAttribute(Global.session_key_user) User user, 
+				WebPage page) {
 
 		return rest.https.query(user, UserUrl.queryUser,
 				null,
@@ -93,24 +93,62 @@ public class UserController extends GenericAction {
 
 	}
 	
+	// 设置 是否接收  短信, 邮件 通知; 
+	@RequestMapping(  value="/notice" ,  method = RequestMethod.POST)
+	public Object  activeNotice (
+			@ModelAttribute(Global.session_key_user) User user, 
+			@RequestBody  String  body 
+			){
 	
-	@RequestMapping( value="/groups" , method= RequestMethod.GET ,  params={"user_id"})
-	public Object getGroupsOfUser ( @ModelAttribute( Global.session_key_user) User user ,
-					String user_id 
-			){ 
+		return rest.https.put(user, "/users/{user_id}/activatenotice", body, 
+				UrlParams.get().user_id(user.getId()),  null );
 		
-		return rest.https.get(user, "/users/{user_id}/groups",   UrlParams.get().user_id(user_id), null);
 		 
 	}
-	
 
+	
+	@RequestMapping( value="/pwdreset" ,  method = RequestMethod.POST)
+	public Object  ccSelfPassWord ( 
+			@ModelAttribute(Global.session_key_user) User user, 
+			@RequestBody Map  body 
+			){
+		 
+		return rest.https.put(user, "/users/{user_id}/pwdreset", body,
+				UrlParams.get().user_id(user.getId()), 
+				null	);
+		
+		//return null ; 
+	}
+	
+	
+	
 	@RequestMapping(method = RequestMethod.PUT) 
 	public Object updateUser(@ModelAttribute(Global.session_key_user) User user, 
 			                 @Validated(Update.class)@RequestBody User _user , 
+			                 HttpServletRequest  request ,
+			                 boolean cc_e , 
+			                 boolean cc_m ,
 			                 BindingResult result 
 			) {
 
 		Utils.handlerBindngResult(result);
+		
+		
+		// 更新;
+		Map usermap = (Map) 
+				request.getSession().getAttribute(Global.session_key_usermap);
+		
+		// bug :  admin 更改其他 user 时  错误 , 自己的notive 会关闭; 
+		// 			admin: 的邮箱, 手机 不许更改; 
+		
+//		if( cc_e ){
+//			usermap.put("mail_notice", 0);
+//		}
+//		
+//		if( cc_m ){
+//			usermap.put("sms_notice", 0);
+//		}
+		
 		
 		return rest.https.put(user, UserUrl.r_d_u_UserById, _user, 
 				UrlParams.get().user_id(_user.getId()),
@@ -119,11 +157,19 @@ public class UserController extends GenericAction {
 		 
 	}
 	
+	@RequestMapping( value="/groups" , method= RequestMethod.GET ,  params={"user_id"})
+	public Object getGroupsOfUser (
+					@ModelAttribute( Global.session_key_user) User user ,
+					String user_id 
+			){ 
+		
+		return rest.https.get(user, "/users/{user_id}/groups",   UrlParams.get().user_id(user_id), null);
+		 
+	}
 	
-	
-	
+
+	 
 	@RequestMapping(value="/{user_id:[0-9]+}" , method = RequestMethod.DELETE)
-	
 	public Object delUserById(@ModelAttribute(Global.session_key_user) User user,
 			@PathVariable String user_id) {
 
@@ -142,7 +188,7 @@ public class UserController extends GenericAction {
 		 
 		   
 	 }
-	 
+ 
 	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -158,6 +204,13 @@ public class UserController extends GenericAction {
 
 		Utils.handlerBindngResult(result);
 		 
+		// 判断是否已经登陆舰; 
+		Object user = session.getAttribute(Global.session_key_user);
+	  //  Object attribute = session.getAttribute(Global.session_logout);
+					   
+		if( null != user){
+			return RESP_ERR(ErrCode.login_yet);
+		}
 		 
 		try {
 			   
@@ -184,16 +237,20 @@ public class UserController extends GenericAction {
 			// 根据  username 获得用户; 
 			Map usemap = (Map) rest.https.get(User, UserUrl.getByName,
 					 null , 
-					 SuffixParams.get().name(User.getUsername())
+					 SuffixParams.get().name(  new String( User.getUsername().getBytes("utf-8") 
+							 ,"iso-8859-1" )  )
 					).get("ret"); 
 			
 			//获取 account 权限;   // region权限, 在应用时获取;    
 			
 			 User.setAccount_id(usemap.get("account_id").toString());
 			 User.setId(usemap.get("id").toString());
-			
+			  
+			session.setAttribute(Global.session_key_usermap, usemap);
 			session.setAttribute(Global.session_key_user, User); 
+			
 			session.removeAttribute(Global.identifypic_login);
+			
 			return RESP(usemap);
 
 		} catch (Exception e) {
@@ -207,7 +264,7 @@ public class UserController extends GenericAction {
 			Integer times = (Integer) session.getAttribute(Global.session_key_login_time);
 			times = null == times ? 0 : times;
 			session.setAttribute(Global.session_key_login_time, ++times);  
-			return RESP_ERR(  ErrCode.pass_err );
+			return RESP_ERR(  e.getMessage() );
 			
 			 
 			
@@ -220,10 +277,12 @@ public class UserController extends GenericAction {
 	@RequestMapping(value = "/logout" , method=RequestMethod.GET)
 	@ResponseBody
 	public void logout( HttpSession session , SessionStatus sessionStatus) {
+		 
 		
 		session.invalidate();
-		 
 		sessionStatus.setComplete();
+		
+		
 		//return RESP(true);
 
 	}
@@ -244,11 +303,10 @@ public class UserController extends GenericAction {
 		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
 		Object web_site = context.getBean("web_site");
 		
-		String email = _user.getEmail();
-		 
-
-		String uuid = UUID.randomUUID().toString();
-		String verifyEmailUrl = web_site + "/#/access/verify_email?uuid=" + uuid ;
+		String email = _user.getEmail(); 
+		String uuid =  Utils.randomStr(32); 
+		String sid = session.getId();
+		String verifyEmailUrl = web_site + "/#/access/verify_email?v=" + uuid +"&s=" + sid ;
 
 		_user.setSendVerifyEmailTime(new Date().getTime());
 		session.setAttribute(uuid	, _user );
@@ -265,16 +323,26 @@ public class UserController extends GenericAction {
 	}
 	
 	
-	@RequestMapping( value="/verifyemail" , method= RequestMethod.GET)
+	@RequestMapping( value="/verifyemail" ,  params={  "uuid"}, 
+			method= RequestMethod.GET)
 	public Object verifyEmail ( 
 				HttpServletRequest request,
 				@ModelAttribute(Global.session_key_user) User user,
-				String uuid  
+				String uuid  ,
+				String  s  
 			){
+		
+		
 		
 		HttpSession session = request.getSession();
 		
+		//ServletContext servletContext = request.getServletContext();
+		
+//		servletContext.set
+		
+		
 		Object attribute = session.getAttribute(uuid);
+		  
 		
 		if( null == attribute){
 			return RESP(false); 
@@ -287,13 +355,22 @@ public class UserController extends GenericAction {
 		if( sendVerifyEmailTime + 1000*60*30 < new Date().getTime()){
 			return RESP(false);
 		}
+		 
 		
-		u.setEmail_verified(true);
-		u.setSendVerifyEmailTime(null); 
+		Map map = rest.https.put(user, UserUrl.r_d_u_UserById, u,
+								 UrlParams.get().user_id(u.getId()), null );
 		
-		Map map = rest.https.put(user, UserUrl.r_d_u_UserById, u, UrlParams.get().user_id(u.getId()), null );
+		String  body = "{\"email_verified\":1}"; 
+		
+		Map map2 = rest.https.put(user, "/users/{user_id}/verify", body , 
+					UrlParams.get().user_id(u.getId()), null);
 		
 		session.removeAttribute(uuid);
+		
+		// 验证 邮件 值能验证自己的邮件; 
+		Map usermap  = (Map) session.getAttribute(Global.session_key_usermap);
+		
+		usermap.put("email_verified", 1); 
 		
 		return  RESP(true) ;
 		
@@ -311,11 +388,14 @@ public class UserController extends GenericAction {
 		Utils.handlerBindngResult(result); 
 		
 		HttpSession session = request.getSession();
+		
+		String mobile_phone = _user.getMobile_phone();
+		
 		 
-		Object attribute = session.getAttribute(_user.getMobile_phone());
+		Object attribute = session.getAttribute( mobile_phone );
 		// 手机好是否在 session中;
 		if(null == attribute){
-			return  RESP_ERR(ErrCode.phone_err);
+			return  RESP_ERR(ErrCode.no_send_smg);
 		}
 		
 		// 验证码是否正确; 
@@ -324,14 +404,27 @@ public class UserController extends GenericAction {
 		}
 		
 		// 更新 user ;
-		_user.setMobile_phone_verified(true);
+	
 		
-		
-		return rest.https.put(user, UserUrl.r_d_u_UserById, _user , 
+		// 更新 mobile_phone 字段; 
+		  rest.https.put(user, UserUrl.r_d_u_UserById, _user , 
 								UrlParams.get().user_id(_user.getId()), null);
 		
-		// SimpleMail.sendSimpleMail(email, "用户邮箱验证", title, note, message);
+		// 更新 mobile_phone_verify 字段; 
 		
+		String  body = "{\"mobile_phone_verified\":1}"; 
+		
+		Map map = rest.https.put(user, "/users/{user_id}/verify", body , 
+					UrlParams.get().user_id(_user.getId()), null);
+		 
+		
+		// SimpleMail.sendSimpleMail(email, "用户邮箱验证", title, note, message);
+		Map usermap  = (Map) session.getAttribute(Global.session_key_usermap);
+		usermap.put("mobile_phone_verified", 1);
+		
+		session.removeAttribute(mobile_phone);
+		
+		return map ;
 		   
 	}
 	

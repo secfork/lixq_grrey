@@ -190,15 +190,17 @@ public class Utils {
   
 	
 	private static String  nom = "0123456789";
-	private static String  nom1 = "0123456789qwertyuiopasdfghjklzxcvbnm";
+	private static String  nom1 = "0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm";
 	
+	 
 	private static Random rd = new Random();
 	
 	public static  String  randomStr ( int size ){
 		int i = 0 ; 
 		StringBuffer buf = new StringBuffer();
 		while (i++ <size) {
-			buf.append(  nom1.charAt(rd.nextInt(36) )); 
+			buf.append(  nom1.charAt(rd.nextInt(62) ));  // 大写 数字; 
+//			buf.append(  nom1.charAt(rd.nextInt(36) ));  // 大小写, 数字
 			
 		}
 		return  buf.toString();

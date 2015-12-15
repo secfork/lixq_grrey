@@ -53,8 +53,7 @@ public class ModelDeviceController extends GenericAction {
 										){ 
 		
 		deviceModel.put("account_id", user.getAccount_id());
-		 
-		
+		  
 		return rest.https.post(
 				user,
 				DeviceModelUrl.create,
@@ -77,7 +76,8 @@ public class ModelDeviceController extends GenericAction {
 //		page.setItemsPerPage(200); 
 		log.info(" 直支持 1000 个 device Model ");  
 		return  rest.deviceModel.queryDeviceModel(user,
-												 QueryParams.get().offset(0).limit(Global.max_ItemsPerPage));
+												 QueryParams.get().offset(0)
+												 	.limit(Global.max_ItemsPerPage));
 		
 //		return   rest.deviceModel.query(user.getAccessKey(), DeviceModelUrl.query, page);
 		
@@ -117,7 +117,8 @@ public class ModelDeviceController extends GenericAction {
 
     
 	@RequestMapping( value="/points",  method=RequestMethod.POST)
-	public Object  createPointOfDeviceModel  ( @ModelAttribute(Global.session_key_user) User user ,
+	public Object  createPointOfDeviceModel  ( 
+			@ModelAttribute(Global.session_key_user) User user ,
 										   @RequestBody Map point 
 										){ 
 		
@@ -165,7 +166,9 @@ public class ModelDeviceController extends GenericAction {
 											BindingResult result
 											){
 		 Utils.handlerBindngResult(result);
-		return rest.deviceModel.deletePointOfDeviceModel(user, point.getDevice_model(), point.getId());
+		return rest.deviceModel.deletePointOfDeviceModel(user, 
+				point.getDevice_model(),
+				point.getId());
 	}
 
     

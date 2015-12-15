@@ -56,7 +56,8 @@ public class ThinglinxOss {
 			ObjectMetadata  meta  = new ObjectMetadata();
 			meta.setContentType(contentType);
 			
-			PutObjectResult result = client.putObject(bocketName, newfilename,  mFile.getInputStream(), new ObjectMetadata());
+			PutObjectResult result = client.putObject(bocketName, newfilename,  
+					mFile.getInputStream(), new ObjectMetadata());
 			
 		   String eTag = result.getETag();
 		   

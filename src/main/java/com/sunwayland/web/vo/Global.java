@@ -61,6 +61,8 @@ public class Global {
 	
 	public static String hold_account ="hold_account"; // account 注册;
 	//public static String hold_account_token = "hold_account_token"; // 创建account , 发动到邮 确保从一邮件连接到登录界面的 uuid ; 
+	public static String session_key_usermap = "session_key_usermap";
+	public static String session_logout = "session_logout";
 	
 
 	

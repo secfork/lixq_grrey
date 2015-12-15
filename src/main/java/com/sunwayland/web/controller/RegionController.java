@@ -76,7 +76,8 @@ public class RegionController extends GenericAction {
 			) {
  
 		GenericParams total = SuffixParams.get().calc_sum(true);
-		GenericParams data = SuffixParams.get().limit(page.getLimit()).offset(page.getOffset());
+		GenericParams data = SuffixParams.get().limit(page.getLimit())
+				.offset(page.getOffset());
 		
 		
 		
@@ -95,10 +96,7 @@ public class RegionController extends GenericAction {
 			@RequestBody String region,
 			@PathVariable Long region_id) throws Exception {
 //		semaphore.
-		
-		Semaphore s = new Semaphore(1);
-		s.acquire();
-		
+		 
 		return rest.https.put(user, ReginUrl.get_update_del_ById , region,
 						UrlParams.get().region_id(region_id),
 						null );

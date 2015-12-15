@@ -95,6 +95,25 @@
 		<!-- 阿里云  oss 服务 end ;  -->	
 		
 		
+		
+		
+		<!--  短信依赖  -->
+
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+				
+			
+			
+			
+		
 	
 		<!-- https rest 依赖 -->  
 		  	
@@ -102,7 +121,9 @@
 			 	<groupId>org.apache.httpcomponents</groupId>
 			 	<artifactId>httpclient</artifactId>
 			 	<version>4.3.1</version>
-			 </dependency>  
+			 </dependency> 
+			 
+			
 			 
 			  <dependency>
 			   <groupId>org.apache.httpcomponents</groupId>
@@ -152,7 +173,9 @@
 					<port>8082</port>
 					<path>/thinglinx</path>
 					<uriEncoding>iso-8859-1</uriEncoding>
-					<finalName>thinglinx</finalName>
+					 
+					
+					<finalName>thinglinx</finalName> 
 					<server>tomcat7</server>
 				</configuration>
 			</plugin>

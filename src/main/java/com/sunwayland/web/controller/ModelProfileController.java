@@ -57,7 +57,9 @@ public class ModelProfileController extends ExceptionHandl {
 
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public Object getAllProfileOfSystemModel(@ModelAttribute(Global.session_key_user) User user, String system_model) {
+	public Object getAllProfileOfSystemModel(
+			@ModelAttribute(Global.session_key_user) User user,
+			String system_model) {
 
 		return rest.SystemModel.getALLProfileOfSystemModel(user, system_model);
 	}
@@ -94,7 +96,9 @@ public class ModelProfileController extends ExceptionHandl {
 			@Validated(profileLog.class) @RequestBody Tag tag,
 			BindingResult result) {
 		Utils.handlerBindngResult(result);
-		return rest.profile.setSysModelTag2ProfleLog(user , tag.getProfile(), tag.getId(), tag);
+		return rest.profile.setSysModelTag2ProfleLog(user ,
+					tag.getProfile(),
+					tag.getId(), tag);
 	}
 
 	
@@ -103,13 +107,16 @@ public class ModelProfileController extends ExceptionHandl {
 			@Validated(profileLog.class) @RequestBody Tag tag,
 			BindingResult result) {
 		Utils.handlerBindngResult(result);
+		
 		return rest.profile.updateProfLogTag(user , tag);
-
+		
 	}
 
 	
 	@RequestMapping(value = "/tags", method = RequestMethod.GET)
-	public Object getAllTagsOfProfLog(@ModelAttribute(Global.session_key_user) User user, String profile) {
+	public Object getAllTagsOfProfLog(
+			@ModelAttribute(Global.session_key_user) User user, 
+			String profile) {
 		 
 		return rest.profile.getAllLogPointOfProfile( user , profile);
 
@@ -117,10 +124,13 @@ public class ModelProfileController extends ExceptionHandl {
 
 	
 	@RequestMapping(value = "/tags", method = RequestMethod.DELETE)
-	public Object deleteLogTagOfProfile(@ModelAttribute(Global.session_key_user) User user,
-			@Validated(profileLog.class) Tag tag, BindingResult result) {
+	public Object deleteLogTagOfProfile(
+			@ModelAttribute(Global.session_key_user) User user, 
+			@Validated(profileLog.class) Tag tag, 
+			BindingResult result) {
 		Utils.handlerBindngResult(result);
-		return rest.profile.deleteTagOfSystemModelProfile(user,	tag.getProfile(), tag.getId());
+		return rest.profile.deleteTagOfSystemModelProfile(user,	
+				tag.getProfile(), tag.getId());
 
 	}
 
@@ -138,7 +148,8 @@ public class ModelProfileController extends ExceptionHandl {
 	}
 
 	
-	@RequestMapping(value = "/triggers", params={"profile"},method = RequestMethod.GET)
+	@RequestMapping(value = "/triggers", params={"profile"},
+			method = RequestMethod.GET)
 	public Object queryTriggersOfProfile(@ModelAttribute(Global.session_key_user) User user,
 			String profile,
 			WebPage page 
@@ -163,6 +174,7 @@ public class ModelProfileController extends ExceptionHandl {
 
 	}
 	
+	@Deprecated
 	@RequestMapping( value = "/triggers/{triger_id}", method= RequestMethod.GET )
 	public Object getTrigerById (@ModelAttribute(Global.session_key_user) User user,
 					@PathVariable String triger_id ){
@@ -184,11 +196,14 @@ public class ModelProfileController extends ExceptionHandl {
 
 	
 	@RequestMapping(value = "/triggers", method = RequestMethod.DELETE)
-	public Object deleteTrigerOfProfile(@ModelAttribute(Global.session_key_user) User user,
-			@Validated(Update.class) Trigger trigger, BindingResult result) {
+	public Object deleteTrigerOfProfile(
+			@ModelAttribute(Global.session_key_user) User user,
+			@Validated(Update.class) Trigger trigger,
+			BindingResult result) {
 		Utils.handlerBindngResult(result);
 
-		return rest.profile.deleteTriggerOfSMProfile(user,trigger.getProfile(), trigger.getId());
+		return rest.profile.deleteTriggerOfSMProfile(user,trigger.getProfile(),
+				trigger.getId());
 	}
 
 }

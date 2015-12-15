@@ -33,7 +33,12 @@ public enum ErrCode {
      //account  admin 用户 无 预留email;
      no_account_email,
      // 页面失效
-     page_expire ,
+     page_expire,
+     
+     // 已经登录, 无需重复登录; 
+     login_yet, 
+     // 未发送验证码; 
+     no_send_smg ,
    
      
     

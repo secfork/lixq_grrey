@@ -2,6 +2,7 @@ package com.sunwayland.web.controller;
 
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -11,9 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpRequest;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -109,9 +113,25 @@ public class CommonController extends GenericAction {
 
 	// ======================是否已经登录======================================
 	@RequestMapping(value = "common/islogined")
-	public Object isLoaded(@ModelAttribute(Global.session_key_user) User user) {
-
-		return RESP(true);
+	public Object isLoaded(
+			// @ModelAttribute(Global.session_key_user) User user,
+			HttpServletRequest request ,
+			SessionStatus  sessionStatus
+			) { 
+		
+		HttpSession session = request.getSession();
+		
+		Object attribute = session.getAttribute(Global.session_key_usermap);
+		
+		if( null == attribute ){
+			// sessionStatus.setComplete();
+			return RESP(false);
+		}else{
+			log.info("是否已经登录 " + attribute );
+			  
+			return RESP( attribute );
+		}
+		 
 
 	}
 
@@ -130,21 +150,27 @@ public class CommonController extends GenericAction {
 		return RESP(StringUtils.equalsIgnoreCase(sk, code));
 	}
 
-	@RequestMapping(value = "common/admin", params = { "account", "identify" }, method = RequestMethod.GET)
+	@RequestMapping(value = "common/admin", params = { "account", "identify" },
+			method = RequestMethod.GET)
 	public Object getAdminUserByAccountName(
 			HttpServletRequest request ,
 			String account,
 			String identify
-			) {
+			) throws UnsupportedEncodingException {
 
 		HttpSession session = request.getSession();
 		
 		Object _identify = session.getAttribute(Global.identifypic_update_admin);
+		
+		
 		if (null == _identify || !StringUtils.equalsIgnoreCase(identify, (CharSequence) _identify)) {
 			return RESP_ERR(ErrCode.identify_err);
 		}
 
+		account =  new String( account.getBytes("iso-8859-1") , "utf-8");
+		
 		Map map = rest.http.get("/accounts/{account_name}/super_user",
+				
 				UrlParams.get().put("account_name", account),
 				null);
 
@@ -153,7 +179,8 @@ public class CommonController extends GenericAction {
 			return RESP_ERR(ErrCode.no_account);
 		}
 
-		String  uuid = UUID.randomUUID().toString();
+		String  uuid =Utils.randomStr(32);
+		String  sid  = session.getId();
 		
 		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
 		Object web_site = context.getBean("web_site"); 
@@ -170,9 +197,9 @@ public class CommonController extends GenericAction {
 		}
 		
 		
-		String  url  =  web_site + "/#/access/forgotpwd?uuid=" + uuid ;
+		String  url  =  web_site + "/#/access/forgotpwd?v=" + uuid +"&s=" + sid ;
 		
-		try {
+		try { 
 			SimpleMail.sendAccountForgetPassEmail ( email , url );
 		} catch (Exception e) {
 			// 预留email 无效; 
@@ -183,6 +210,7 @@ public class CommonController extends GenericAction {
 		session.removeAttribute(Global.identifypic_update_admin);
 		// 
 		session.setAttribute(Global.hold_account_name, account);
+		
 		session.setAttribute(uuid, true ); 
 		
 		return RESP(true);
@@ -218,7 +246,8 @@ public class CommonController extends GenericAction {
 	 
 			newAdmin.setIs_super_user("ture");
 			Map map = rest.http.put("/accounts/{account}/super_user", newAdmin,
-										UrlParams.get().put("account", account_name), null);
+										UrlParams.get().put("account", account_name),
+										null);
 		   
 			session.removeAttribute(uuid);
 			session.removeAttribute(Global.hold_account_name);
@@ -229,7 +258,7 @@ public class CommonController extends GenericAction {
 
 	@ResponseBody
 	@RequestMapping(value = "common/logintimes", method = RequestMethod.GET)
-	public Object getErrPassTiems(HttpSession session) {
+	public Object getLoginTiems(HttpSession session) {
 
 		Object attribute = session.getAttribute(Global.session_key_login_time);
 		return RESP(attribute);
